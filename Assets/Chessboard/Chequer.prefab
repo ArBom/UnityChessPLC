@@ -96,5 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a02b05251e81e249b92b04ec63296c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  column: 1
-  row: 8
+  color: 0
+  chessman: {fileID: 0}

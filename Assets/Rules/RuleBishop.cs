@@ -12,7 +12,7 @@ namespace Assets
 
         public (List<ChequerPos> posible, List<ChequerPos> attack) moves (ChequerPos chequerPos)
         {
-            Color color = chessboard.chequers[chequerPos.column, chequerPos.row].chessman.color;
+            //Color color = chessboard.chequers[chequerPos.column, chequerPos.row].chessman.color;
 
             List<ChequerPos> possible = new List<ChequerPos>();
 

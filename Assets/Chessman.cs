@@ -12,8 +12,7 @@ namespace Assets
         public Color color;
         protected ChessmanType chessmanType;
         protected Mesh mesh;
-        //MeshFilter my_mf;
-        //MeshRenderer my_mr;
+
         protected Vector3[] points;
         protected int[] triangleElements;
 
@@ -27,26 +26,9 @@ namespace Assets
             mesh = GetComponent<MeshFilter>().mesh;
         }
 
-        protected void Update()
+        private void Update()
         {
-            if (Input.GetMouseButton(0))
-            {
-                RaycastHit rh = new RaycastHit();
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out rh, 200))
-                {
-                    if (rh.transform)
-                    {
-                        print("Clicked");
-                    }
-                }
-            }
-        }
-
-        public void Clicked(GameObject go)
-        {
-            print(go.name);
+            
         }
 
         protected void CreateMesh()

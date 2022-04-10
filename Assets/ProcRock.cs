@@ -19,11 +19,6 @@ public class ProcRock : Chessman
         CreateMesh();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void MakeData()
     {

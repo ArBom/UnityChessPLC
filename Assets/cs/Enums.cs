@@ -25,23 +25,27 @@ namespace Assets
 
     public struct ChequerPos
     {
-        public short column { get; set; }
-        public short row { get; set; }
+        public ushort column { get; set; }
+        public ushort row { get; set; }
     }
 
     public static class ChequerPosHelper
     {
-        public static short ChequerPos2int(ChequerPos chequerPosIn)
+        public static ushort ChequerPos2ushort(ChequerPos chequerPosIn)
         {
-            return (short)(chequerPosIn.column * 8 + chequerPosIn.row);
+            return (ushort)(chequerPosIn.column * 8 + chequerPosIn.row);
         }
 
-        public static ChequerPos Int2ChequerPos(int intIn)
+        public static ChequerPos Int2ChequerPos(ushort intIn)
         {
+            if (intIn > 63)
+            {
+                //TODO zbyt duża, nieprawidłowa wartość
+            }
             ChequerPos chequerPos = new ChequerPos
             {
-                column = Convert.ToInt16(intIn / 8),
-                row = Convert.ToInt16(intIn % 8)
+                column = Convert.ToUInt16(intIn / 8),
+                row = Convert.ToUInt16(intIn % 8)
             };
             return chequerPos;
         }

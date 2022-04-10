@@ -6,9 +6,9 @@ using Assets;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcKing : Chessman
 {
-    Mesh mesh;
-    Vector3[] points;
-    int[] triangleElements;
+    new Mesh mesh;
+    new Vector3[] points;
+    new int[] triangleElements;
     List<Vector3> normals;
 
     private void Awake()
@@ -22,12 +22,6 @@ public class ProcKing : Chessman
     {
         MakeData();
         CreateMesh();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void MakeData()
@@ -67,11 +61,11 @@ public class ProcKing : Chessman
         }*/
     }
 
-    void CreateMesh()
+    /*void CreateMesh()
     {
         mesh.Clear();
         mesh.vertices = points;
         mesh.triangles = triangleElements;
         //mesh.SetNormals( normals);
-    }
+    }*/
 }

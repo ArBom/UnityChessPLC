@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcKnight : Chessman
 {
+    public Collider coll = null;
+
     private void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
@@ -17,11 +19,22 @@ public class ProcKnight : Chessman
     {
         MakeData();
         CreateMesh();
+        coll = GetComponent<Collider>();
     }
 
-    private void OnMouseDown()
+    new void Update()
     {
-        print("Clicked");
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+
+        }
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        
     }
 
     void MakeData()
