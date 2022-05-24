@@ -8,17 +8,82 @@ namespace Assets
 {
     class RuleBishop
     {
-        Chessboard chessboard;
-
-        public (List<ChequerPos> posible, List<ChequerPos> attack) moves (ChequerPos chequerPos)
+        public (List<ChequerPos> possible, List<ChequerPos> confuting) Moves (ChequerPos chequerPos) //IN: position of moving chessman
         {
-            //Color color = chessboard.chequers[chequerPos.column, chequerPos.row].chessman.color;
+            Chessboard chessboard = new Chessboard(); //TODO change it!
+            Color color = chessboard.chequers[chequerPos.column, chequerPos.row].chessman.color;
 
             List<ChequerPos> possible = new List<ChequerPos>();
+            List<ChequerPos> confuting = new List<ChequerPos>();
 
-            List<ChequerPos> atttack = new List<ChequerPos>();
+            short columnToCheck = chequerPos.column;
+            short rowToCheck = chequerPos.row;
+            CanMoveInto canMoveInto;
 
-            return (possible, atttack);
+            for (short direction = 0; direction<5; direction++)
+            {
+                switch(direction)
+                {
+                    case 0: //north-east
+                        {
+                            do
+                            {
+                                canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+                                columnToCheck++;
+                                rowToCheck++;
+                            }
+                            while (canMoveInto == CanMoveInto.Empty);
+                        }
+                        break;
+
+                    case 1: //north-west
+                        {
+                            do 
+                            {
+                                canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+                                columnToCheck--;
+                                rowToCheck++;
+                            }
+                            while (canMoveInto == CanMoveInto.Empty);
+                        }
+                        break;
+
+                    case 2: //south-east
+                        {
+                            do
+                            {
+                                canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+                                columnToCheck++;
+                                rowToCheck--;
+                            }
+                            while (canMoveInto == CanMoveInto.Empty);
+                        }
+                        break;
+
+                    case 3: //south-west
+                        {
+                            do
+                            {
+                                canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+                                columnToCheck--;
+                                rowToCheck--;
+                            }
+                            while (canMoveInto == CanMoveInto.Empty);
+                        }
+                        break;
+
+                    default: canMoveInto = CanMoveInto.NoExist; break;
+                }
+
+                if (canMoveInto == CanMoveInto.Empty)
+                    possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+                if (canMoveInto == CanMoveInto.TakenO)
+                    confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+                direction++;
+            }
+            return (possible, confuting);
         }
     }
 }

@@ -6,10 +6,6 @@ using Assets;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcBishop : Chessman
 {
-    new Mesh mesh;
-    new Vector3[] points;
-    new int[] triangleElements;
-
     private void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
@@ -44,10 +40,91 @@ public class ProcBishop : Chessman
         };
     }
 
-    /*void CreateMesh()
+    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
-        mesh.Clear();
-        mesh.vertices = points;
-        mesh.triangles = triangleElements;
-    }*/
+        List<ChequerPos> possible = new List<ChequerPos>();
+        List<ChequerPos> confuting = new List<ChequerPos>();
+
+        short columnToCheck = position.Value.column;
+        short rowToCheck = position.Value.row;
+
+        CanMoveInto canMoveInto;
+
+        do //NE
+        {
+            rowToCheck++;
+            columnToCheck--;
+            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+            if (canMoveInto == CanMoveInto.TakenO)
+            {
+                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+            if (canMoveInto == CanMoveInto.Empty)
+            {
+                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+        }
+        while (canMoveInto == CanMoveInto.Empty);
+        rowToCheck = position.Value.row;
+        columnToCheck = position.Value.column;
+
+        do //SE
+        {
+            rowToCheck--;
+            columnToCheck--;
+            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+            if (canMoveInto == CanMoveInto.TakenO)
+            {
+                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+            if (canMoveInto == CanMoveInto.Empty)
+            {
+                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+        }
+        while (canMoveInto == CanMoveInto.Empty);
+        rowToCheck = position.Value.row;
+        columnToCheck = position.Value.column;
+
+        do //SW
+        {
+            rowToCheck--;
+            columnToCheck++;
+            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+            if (canMoveInto == CanMoveInto.TakenO)
+            {
+                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+            if (canMoveInto == CanMoveInto.Empty)
+            {
+                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+        }
+        while (canMoveInto == CanMoveInto.Empty);
+        rowToCheck = position.Value.row;
+        columnToCheck = position.Value.column;
+
+        do //NW
+        {
+            columnToCheck++;
+            rowToCheck++;
+            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
+
+            if (canMoveInto == CanMoveInto.TakenO)
+            {
+                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+            if (canMoveInto == CanMoveInto.Empty)
+            {
+                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
+            }
+        }
+        while (canMoveInto == CanMoveInto.Empty);
+        columnToCheck = position.Value.column;
+
+        return (possible, confuting);
+    }
 }

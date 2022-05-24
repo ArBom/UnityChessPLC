@@ -16,17 +16,36 @@ namespace Assets
     {
         EMPTY = 0,
         PAWN = 1,
-        ROCK = 2,
+        ROOK = 2,
         KNIGHT = 4,
         BISHOP = 8,
         QUEEN = 16,
         KING = 32,
     }
 
+    public enum CanMoveInto
+    {
+        NoExist = 0,
+        Empty = 1,
+        TakenY = 2,
+        TakenO = 3,
+    }
+
     public struct ChequerPos
     {
-        public ushort column { get; set; }
-        public ushort row { get; set; }
+        public short column { get; set; }
+        public short row { get; set; }
+    }
+
+    public struct ChequersLists
+    {
+        public List<int> Prop1 { get; set; }
+        public List<int> Attac { get; set; }
+    }
+
+    public interface IChessman
+    {
+        (List<ChequerPos> possible, List<ChequerPos> confuting) Moves(ChequerPos chequerPos);
     }
 
     public static class ChequerPosHelper
@@ -36,16 +55,16 @@ namespace Assets
             return (ushort)(chequerPosIn.column * 8 + chequerPosIn.row);
         }
 
-        public static ChequerPos Int2ChequerPos(ushort intIn)
+        public static ChequerPos? Int2ChequerPos(ushort intIn)
         {
             if (intIn > 63)
             {
-                //TODO zbyt duża, nieprawidłowa wartość
+                return null;
             }
             ChequerPos chequerPos = new ChequerPos
             {
-                column = Convert.ToUInt16(intIn / 8),
-                row = Convert.ToUInt16(intIn % 8)
+                column = Convert.ToInt16(intIn / 8),
+                row = Convert.ToInt16(intIn % 8)
             };
             return chequerPos;
         }

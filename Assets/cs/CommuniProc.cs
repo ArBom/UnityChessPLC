@@ -8,7 +8,7 @@ public class CommuniProc : MonoBehaviour
     const string IPaddr = "192.168.0.100";
     private S7Client s7Client;
 
-    public static CommuniProc Instance { get; private set; }
+    public static CommuniProc Instance { get; private set; } //TODO check should it be public
 
     private void Awake()
     {

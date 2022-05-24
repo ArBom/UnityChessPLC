@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcKnight : Chessman
 {
-    public Collider coll = null;
-
     private void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
@@ -19,22 +17,97 @@ public class ProcKnight : Chessman
     {
         MakeData();
         CreateMesh();
-        coll = GetComponent<Collider>();
     }
 
-    new void Update()
+    void Update()
     {
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
 
-        }
     }
 
     private void OnMouseUpAsButton()
     {
         
+    }
+
+
+    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves() //IN: position of moving chessman
+    {
+        List<ChequerPos> possible = new List<ChequerPos>();
+        List<ChequerPos> confuting = new List<ChequerPos>();
+
+        short columnToCheck = position.Value.column;
+        short rowToCheck = position.Value.row;
+
+        CanMoveInto canMoveIntoTemp;
+        ChequerPos chequerPosTemp;
+
+        //TODO all colors below
+
+        //NNE
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column + 1), row = (short)(position.Value.row + 2) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //NEE
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column + 2), row = (short)(position.Value.row + 1) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //SEE
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column + 2), row = (short)(position.Value.row - 1) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //SEE
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column + 1), row = (short)(position.Value.row - 2) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //SSW
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column - 2), row = (short)(position.Value.row - 1) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //SWW
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column - 1), row = (short)(position.Value.row - 2) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //NWW
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column - 2), row = (short)(position.Value.row + 1) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        //NNW
+        chequerPosTemp = new ChequerPos() { column = (short)(position.Value.column - 1), row = (short)(position.Value.row + 2) };
+        canMoveIntoTemp = this.chessboard.Check(color, chequerPosTemp);
+        if (canMoveIntoTemp == CanMoveInto.Empty)
+            possible.Add(chequerPosTemp);
+        else if (canMoveIntoTemp == CanMoveInto.TakenO)
+            confuting.Add(chequerPosTemp);
+
+        return (possible, confuting);
     }
 
     void MakeData()

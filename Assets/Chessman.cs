@@ -7,11 +7,14 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class Chessman : MonoBehaviour
+    public abstract class Chessman : MonoBehaviour
     {
-        public Color color;
+        public Chessboard chessboard;
+        public Color color { get; private set; }
         protected ChessmanType chessmanType;
         protected Mesh mesh;
+        public ChequerPos? position = null;
+        const float chSize = 1;
 
         protected Vector3[] points;
         protected int[] triangleElements;
@@ -28,7 +31,7 @@ namespace Assets
 
         private void Update()
         {
-            
+           
         }
 
         protected void CreateMesh()
@@ -37,5 +40,31 @@ namespace Assets
             mesh.vertices = points;
             mesh.triangles = triangleElements;
         }
+
+        public bool SetValues(ChequerPos newPos, Assets.Color newColor)
+        {
+            if (!position.HasValue && newPos.row < 8 && newPos.column < 8 && newPos.row >=0 && newPos.column >= 0)
+            {
+                position = newPos;
+                color = newColor;
+
+                if (color == Color.Black)
+                {
+                    this.transform.Rotate(new Vector3(0, 1, 0), 90);
+                }
+                else
+                {
+                    this.transform.Rotate(new Vector3(0, 1, 0), -90);
+                }
+
+                this.transform.Translate(chSize * position.Value.row, 0, chSize * -position.Value.column);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public abstract (List<ChequerPos> possible, List<ChequerPos> confuting) Moves();
     }
 }
