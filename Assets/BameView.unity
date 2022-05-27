@@ -207,6 +207,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChessmanKing
       objectReference: {fileID: 0}
+    - target: {fileID: 5912078961232382402, guid: 871c6e66efda9c04aa424e45445ff3b7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 871c6e66efda9c04aa424e45445ff3b7, type: 3}
 --- !u!1 &850954409
@@ -563,13 +568,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2137985334}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.000653702, z: 0, w: 0.9999998}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.075, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -0.0749, z: 0}
 --- !u!1001 &1030449341807663162
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -581,6 +586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ChessmanQueen
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138176352508772073, guid: 0b3abec59cfd29445834784fab5aa71b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1398660062398356894, guid: 0b3abec59cfd29445834784fab5aa71b,
         type: 3}
@@ -715,6 +725,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ChessmanBishop
+      objectReference: {fileID: 0}
+    - target: {fileID: 5020201962557988129, guid: 917c043cd1bbf764d9fc7304bea0ae9d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 917c043cd1bbf764d9fc7304bea0ae9d, type: 3}
@@ -868,6 +883,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ChessmanRook
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223502640312523065, guid: a4db3fc5de2fad746bd53d184a5a3dd7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4db3fc5de2fad746bd53d184a5a3dd7, type: 3}
