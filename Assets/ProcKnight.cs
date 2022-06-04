@@ -30,7 +30,7 @@ public class ProcKnight : Chessman
     }
 
 
-    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves() //IN: position of moving chessman
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves() //IN: position of moving chessman
     {
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
@@ -107,7 +107,9 @@ public class ProcKnight : Chessman
         else if (canMoveIntoTemp == CanMoveInto.TakenO)
             confuting.Add(chequerPosTemp);
 
-        return (possible, confuting);
+        ChequerPos marked = this.position.Value;
+
+        return (marked, possible, confuting);
     }
 
     void MakeData()

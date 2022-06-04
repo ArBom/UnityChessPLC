@@ -29,7 +29,7 @@ public class Chessboard : MonoBehaviour
     public GameObject ChPawn;
 
 
-    public (List<ChequerPos> possible, List<ChequerPos> confuting) Moves;
+    public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves;
 
     private void Awake()
     {
@@ -148,6 +148,8 @@ public class Chessboard : MonoBehaviour
 
     public void GiveColors()
     {
+        chequers[Moves.marked.column, Moves.marked.row].SetBlueColor();
+
         foreach (var c in Moves.possible)
         {
             chequers[c.column, c.row].SetGreenColor();

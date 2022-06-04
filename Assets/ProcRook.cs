@@ -6,23 +6,30 @@ using Assets;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcRook : Chessman
 {
+    Vector3[] pointsOfCoping;
+    int[] triangleElementsOfCoping;
+    public Mesh meshOfCoping;
+
     private void Awake()
     {
-        mesh = GetComponent<MeshFilter>().mesh;
+        MakeData();
+        AddPier(true, .25f, .12f);
+        Marge();
         chessmanType = ChessmanType.ROOK;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        MakeData();
-        CreateMesh();
-    }
 
+        //CreateMesh();
+
+    }
 
     void MakeData()
     {
-        points = new Vector3[] {
+        pointsOfCoping = new Vector3[] 
+        {
             new Vector3(0f, .37f, 0f),
 
             new Vector3(0f, 0.37f, 0.065f), new Vector3(0.0325f, 0.37f, 0.05629f), new Vector3(0.05629f, 0.37f, 0.0325f), new Vector3(0.065f, 0.37f, 0f), new Vector3(0.05629f, 0.37f, -0.0325f), new Vector3(0.0325f, 0.37f, -0.05629f), new Vector3(0f, 0.37f, -0.065f), new Vector3(-0.0325f, 0.37f, -0.05629f), new Vector3(-0.05629f, 0.37f, -0.0325f), new Vector3(-0.065f, 0.37f, 0f), new Vector3(-0.05629f, 0.37f, 0.0325f), new Vector3(-0.0325f, 0.37f, 0.05629f),
@@ -33,7 +40,8 @@ public class ProcRook : Chessman
             new Vector3(0f, .2f, 0f),
         };
 
-        triangleElements = new int[] {
+        triangleElementsOfCoping = new int[] 
+        {
             0,1,2, 0,2,3, 0,3,4, 0,4,5, 0,5,6, 0,6,7, 0,7,8, 0,8,9, 0,9,10, 0,10,11, 0,11,12, 0,12,1,
             1,14,2, 1,13,14, 2,15,3, 2,14,15, 4,17,5, 4,16,17, 5,18,6, 5,17,18, 7,20,8, 7,19,20, 8,21,9, 8,20,21, 10,23,11, 10,22,23, 11,24,12, 11,23,24,
             14,13,25, 14,25,26, 15,14,26, 15,26,27, 17,16,28, 17,28,29, 18,17,29, 18,29,30, 20,19,31, 20,31,32, 21,20,32, 21,32,33, 23,22,34, 23,34,35, 24,23,35, 24,35,36,
@@ -42,16 +50,30 @@ public class ProcRook : Chessman
             37,38,25, 38,26,25, 38,39,26, 39,27,26, 40,41,29, 40,29,28, 41,42,30, 41,30,29, 43,44,32, 43,32,31, 44,45,33, 44,33,32, 46,47,35, 46,35,34, 47,48,36, 47,36,35,
             49,48,47, 49,47,46, 49,46,45, 49,45,44, 49,44,43, 49,43,42, 49,42,41, 49,41,40, 49,40,39, 49,39,38, 49,38,37, 49,37,48,
         };
+
+        meshOfCoping = new Mesh();
+        meshOfCoping.vertices = pointsOfCoping;
+        meshOfCoping.triangles = triangleElementsOfCoping;
     }
 
-    new void CreateMesh()
+    void Marge()
     {
-        mesh.Clear();
-        mesh.vertices = points;
-        mesh.triangles = triangleElements;
+        var combine = new CombineInstance[2];
+
+        combine[0].mesh = meshOfPier;
+        combine[0].transform = transform.localToWorldMatrix;
+
+        combine[1].mesh = meshOfCoping;
+        combine[1].transform = transform.localToWorldMatrix;
+
+        mesh = new Mesh();
+
+        mesh.CombineMeshes(combine);
+        GetComponent<MeshFilter>().mesh = mesh;
+        //GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
     }
 
-    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
@@ -128,6 +150,8 @@ public class ProcRook : Chessman
         }
         while (canMoveInto == CanMoveInto.Empty);
 
-        return (possible, confuting);
+        ChequerPos marked = this.position.Value;
+
+        return (marked, possible, confuting);
     }
 }

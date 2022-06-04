@@ -25,11 +25,6 @@ public class CubeRS : MonoBehaviour
             rend.material = PureMaterial;
         else
             rend.material = MuddyMaterial;
-
-        /*if(chessman != null && chequerPos.HasValue)
-        {
-            chessman.position = this.chequerPos.Value;
-        }*/
     }
 
     private void OnMouseEnter()
@@ -50,15 +45,6 @@ public class CubeRS : MonoBehaviour
         Renderer rend = GetComponent<Renderer>();
         rend.material.shader = Shader.Find("Specular");
         rend.material.SetColor("_Color", UnityEngine.Color.blue);
-
-        /*if (this.chequerPos.HasValue)
-        {
-            print("Row: " + this.chequerPos.Value.row + ", Column: " + this.chequerPos.Value.column + " " + NameOfThis);
-
-            var foundCubeR = FindObjectOfType<Chessboard>();
-
-            chessboard.Clicked((ushort)this.chequerPos.Value.row);
-        }*/
 
         if(this.chessman != null && chequerPos.HasValue)
         {
@@ -115,5 +101,11 @@ public class CubeRS : MonoBehaviour
     public void SetGreenColor()
     {
         rend.material.SetColor("_Color", UnityEngine.Color.green);
+    }
+
+    public void SetBlueColor()
+    {
+        rend.material.SetColor("_Color", UnityEngine.Color.cyan);
+        ColorofSelection = rend.material.GetColor("_Color");
     }
 }

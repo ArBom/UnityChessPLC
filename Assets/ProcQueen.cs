@@ -50,7 +50,7 @@ public class ProcQueen : Chessman
         };
     }
 
-    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
@@ -203,8 +203,8 @@ public class ProcQueen : Chessman
         while (canMoveInto == CanMoveInto.Empty);
         columnToCheck = position.Value.column;
 
+        ChequerPos marked = this.position.Value;
 
-
-        return (possible, confuting);
+        return (marked, possible, confuting);
     }
 }

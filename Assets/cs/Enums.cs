@@ -37,17 +37,6 @@ namespace Assets
         public short row { get; set; }
     }
 
-    public struct ChequersLists
-    {
-        public List<int> Prop1 { get; set; }
-        public List<int> Attac { get; set; }
-    }
-
-    public interface IChessman
-    {
-        (List<ChequerPos> possible, List<ChequerPos> confuting) Moves(ChequerPos chequerPos);
-    }
-
     public static class ChequerPosHelper
     {
         public static ushort ChequerPos2ushort(ChequerPos chequerPosIn)

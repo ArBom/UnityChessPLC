@@ -21,7 +21,8 @@ public class ProcBishop : Chessman
 
     void MakeData()
     {
-        points = new Vector3[] {
+        points = new Vector3[]
+        {
             new Vector3(0f, .45f, 0f), new Vector3(0f, .38f, 0f),
 
             new Vector3(0f, 0.42f, 0.02f), new Vector3(0.00563f, 0.42f, 0.01919f), new Vector3(0.01081f, 0.42f, 0.01683f), new Vector3(0.01511f, 0.42f, 0.0131f), new Vector3(0.01819f, 0.42f, 0.00831f), new Vector3(0.0198f, 0.42f, 0.00285f), new Vector3(0.0198f, 0.42f, -0.00285f), new Vector3(0.01819f, 0.42f, -0.00831f), new Vector3(0.01511f, 0.42f, -0.0131f), new Vector3(0.01081f, 0.42f, -0.01683f), new Vector3(0.00563f, 0.42f, -0.01919f), new Vector3(0f, 0.42f, -0.02f),  new Vector3(0f, 0.42f, -0.02f), new Vector3(-0.00563f, 0.42f, -0.01919f), new Vector3(-0.01081f, 0.42f, -0.01683f), new Vector3(-0.01511f, 0.42f, -0.0131f), new Vector3(-0.01819f, 0.42f, -0.00831f), new Vector3(-0.0198f, 0.42f, -0.00285f), new Vector3(-0.0198f, 0.42f, 0.00285f), new Vector3(-0.01819f, 0.42f, 0.00831f), new Vector3(-0.01511f, 0.42f, 0.0131f), new Vector3(-0.01081f, 0.42f, 0.01683f), new Vector3(-0.00563f, 0.42f, 0.01919f),
@@ -32,7 +33,8 @@ public class ProcBishop : Chessman
             new Vector3(0f, .25f, 0f)
         };
 
-        triangleElements = new int[] {
+        triangleElements = new int[]
+        {
             0,2,3, 0,3,4, 0,4,5, 0,5,6, 0,6,7, 0,7,8, 0,8,9, 0,9,10, 0,10,11, 0,11,12, 0,12,13, 0,13,14, 0,14,15, 0,15,16, 0,16,17, 0,17,18, 0,18,19, 0,19,20, 0,20,21, 0,21,22, 0,22,23, 0,23,24, 0,24,2,
             2,1,3, 3,1,4, 4,1,5, 5,1,6, 6,1,7, 7,1,8, 8,1,9, 9,1,10, 10,1,11, 11,1,12, 12,1,13, 13,1,14, 14,1,15, 15,1,16, 16,1,17, 17,1,18, 18,1,19, 19,1,20, 20,1,21, 21,1,22, 22,1,23, 23,1,24 ,24,1,2,
             25,26,27, 25,27,28, 25,28,29, 25,29,30, 25,30,31, 25,31,32, 25,32,33, 25,33,34, 25,34,35, 25,35,36, 25,36,37, 25,37,38, 25,38,39, 25,39,40, 25,40,41, 25,41,42, 25,42,43, 25,43,44, 25,44,45, 25,45,46, 25,46,47, 25,47,48, 25,48,49, 
@@ -42,7 +44,7 @@ public class ProcBishop : Chessman
         };
     }
 
-    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
@@ -127,6 +129,8 @@ public class ProcBishop : Chessman
         while (canMoveInto == CanMoveInto.Empty);
         columnToCheck = position.Value.column;
 
-        return (possible, confuting);
+        ChequerPos marked = this.position.Value;
+
+        return (marked, possible, confuting);
     }
 }

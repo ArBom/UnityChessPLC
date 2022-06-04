@@ -38,7 +38,8 @@ public class ProcKing : Chessman
             new Vector3(0f, .25f, 0f),
         };
 
-        triangleElements = new int[] {
+        triangleElements = new int[] 
+        {
             0,1,3, 1,2,3,
             0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,4, 3,4,0,
             4,7,8, 6,5,9, 7,10,8, 9,11,6, 8,10,12, 10,14,12, 7,14,10, 14,7,19, 14,19,12, 19,16,12, 16,8,12, 16,4,8,
@@ -53,119 +54,115 @@ public class ProcKing : Chessman
         };
     }
 
-    public override (List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
-            bool nieDrgnal = true; //TODO change it
+        List<ChequerPos> possible = new List<ChequerPos>();
+        List<ChequerPos> confuting = new List<ChequerPos>();
 
-            List<ChequerPos> possible = new List<ChequerPos>();
-            List<ChequerPos> confuting = new List<ChequerPos>();
-
-            ChequerPos tempChequerPos = new ChequerPos();
-            CanMoveInto canMoveInto;
+        ChequerPos tempChequerPos = new ChequerPos();
+        CanMoveInto canMoveInto;
 
 
         //N
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)position.Value.column };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
+        canMoveInto = chessboard.Check(color, tempChequerPos);
 
         if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-       
+        //NE
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column + 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //NE
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column + 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //E
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column + 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //E
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column + 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //SE
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column + 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //SE
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column + 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //S
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //S
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //SW
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column - 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //SW
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column - 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //W
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column - 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //W
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column - 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        //TODO dopisać roszady
+        //NW
+        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column - 1) };
+        canMoveInto = chessboard.Check(color, tempChequerPos);
+        if (canMoveInto == CanMoveInto.Empty)
+        {
+            possible.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenO)
+        {
+            confuting.Add(tempChequerPos);
+        }
 
-            //TODO dopisać roszady
-            //NW
-            tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column - 1) };
-            canMoveInto = chessboard.Check(color, tempChequerPos);
-            if (canMoveInto == CanMoveInto.Empty)
-            {
-                possible.Add(tempChequerPos);
-            }
-            else if (canMoveInto == CanMoveInto.TakenO)
-            {
-                confuting.Add(tempChequerPos);
-            }
+        ChequerPos marked = this.position.Value;
 
-        print("King moves: " + possible.Count + " " + confuting.Count);
-            return (possible, confuting);
-
+        return (marked, possible, confuting);
     }
 }
