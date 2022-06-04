@@ -8,20 +8,21 @@ public class ProcBishop : Chessman
 {
     private void Awake()
     {
-        mesh = GetComponent<MeshFilter>().mesh;
+        MakeData();
+        AddPier(true, true, .275f, .15f);
+        Marge();
         chessmanType = ChessmanType.BISHOP;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        MakeData();
-        CreateMesh();
+
     }
 
     void MakeData()
     {
-        points = new Vector3[]
+        pointsOfCoping = new Vector3[]
         {
             new Vector3(0f, .45f, 0f), new Vector3(0f, .38f, 0f),
 
@@ -33,7 +34,7 @@ public class ProcBishop : Chessman
             new Vector3(0f, .25f, 0f)
         };
 
-        triangleElements = new int[]
+        triangleElementsOfCoping = new int[]
         {
             0,2,3, 0,3,4, 0,4,5, 0,5,6, 0,6,7, 0,7,8, 0,8,9, 0,9,10, 0,10,11, 0,11,12, 0,12,13, 0,13,14, 0,14,15, 0,15,16, 0,16,17, 0,17,18, 0,18,19, 0,19,20, 0,20,21, 0,21,22, 0,22,23, 0,23,24, 0,24,2,
             2,1,3, 3,1,4, 4,1,5, 5,1,6, 6,1,7, 7,1,8, 8,1,9, 9,1,10, 10,1,11, 11,1,12, 12,1,13, 13,1,14, 14,1,15, 15,1,16, 16,1,17, 17,1,18, 18,1,19, 19,1,20, 20,1,21, 21,1,22, 22,1,23, 23,1,24 ,24,1,2,
@@ -42,6 +43,10 @@ public class ProcBishop : Chessman
             73,74,75, 73,75,51, 51,75,76, 51,76,52, 52,76,77, 52,77,53, 53,77,78, 53,78,54, 54,78,79, 54,79,55, 55,79,80, 55,80,56, 56,80,81, 56,81,57, 57,81,82, 57,82,58, 58,82,83, 58,83,59, 59,83,84, 59,84,60, 60,84,85, 60,85,61, 61,85,86, 61,86,62, 62,86,87, 62,87,63, 63,87,88, 63,88,64, 64,88,89, 64,89,65, 65,89,90, 65,90,66, 66,90,91, 66,91,67, 67,91,92, 67,92,68, 68,92,93, 68,93,69, 69,93,94, 69,94,70, 70,94,95, 70,95,71, 71,95,96, 71,96,72, 72,96,97, 72,97,73,
             75,74,98, 76,75,98, 77,76,98, 78,77,98, 79,78,98, 80,79,98, 81,80,98, 82,81,98, 83,82,98, 84,83,98, 85,84,98, 86,85,98, 87,86,98, 88,87,98, 89,88,98, 90,89,98, 91,90,98, 92,91,98, 93,92,98, 94,93,98, 95,94,98, 96,95,98, 97,96,98,
         };
+
+        meshOfCoping = new Mesh();
+        meshOfCoping.vertices = pointsOfCoping;
+        meshOfCoping.triangles = triangleElementsOfCoping;
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

@@ -10,20 +10,21 @@ public class ProcKing : Chessman
 
     private void Awake()
     {
-        mesh = GetComponent<MeshFilter>().mesh;
+        MakeData();
+        AddPier(true, true, .34f, .14f);
+        Marge();
         chessmanType = ChessmanType.KING;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        MakeData();
-        CreateMesh();
+
     }
 
     void MakeData()
     {
-        points = new Vector3[] {
+        pointsOfCoping = new Vector3[] {
             new Vector3(-0.023f, .54f, -0.023f), new Vector3(-0.023f, .54f, 0.023f), new Vector3(0.023f, .54f, 0.023f), new Vector3(0.023f, .54f, -0.023f),
             new Vector3(-0.0165f, .485f, -0.0165f), new Vector3(-0.0165f, .485f, 0.0165f), new Vector3(0.0165f, .485f, 0.0165f), new Vector3(0.0165f, .485f, -0.0165f),
             new Vector3(-0.023f, .5f, -0.063f), new Vector3(-0.023f, .5f, 0.063f), new Vector3(0.023f, .5f, -0.063f), new Vector3(0.023f, .5f, 0.063f), new Vector3(-0.023f, .45f, -0.063f), new Vector3(-0.023f, .45f, 0.063f), new Vector3(0.023f, .45f, -0.063f), new Vector3(0.023f, .45f, 0.063f),
@@ -38,7 +39,7 @@ public class ProcKing : Chessman
             new Vector3(0f, .25f, 0f),
         };
 
-        triangleElements = new int[] 
+        triangleElementsOfCoping = new int[] 
         {
             0,1,3, 1,2,3,
             0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,4, 3,4,0,
@@ -52,6 +53,10 @@ public class ProcKing : Chessman
             25,54,56, 26,25,56, 27,26,56, 28,27,56, 29,28,56, 30,29,56, 31,30,56, 32,31,56, 33,32,56, 34,33,56, 35,34,56, 36,35,56, 37,36,56, 38,37,56, 39,38,56, 40,39,56, 41,40,56, 42,41,56, 43,42,56, 44,43,56, 45,44,56, 46,45,56, 47,46,56, 48,47,56, 49,48,56, 50,49,56, 51,50,56, 52,51,56, 52,51,56, 53,52,56, 54,53,56, 55,54,56,
             18,19,6,
         };
+
+        meshOfCoping = new Mesh();
+        meshOfCoping.vertices = pointsOfCoping;
+        meshOfCoping.triangles = triangleElementsOfCoping;
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

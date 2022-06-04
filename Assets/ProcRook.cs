@@ -6,14 +6,10 @@ using Assets;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcRook : Chessman
 {
-    Vector3[] pointsOfCoping;
-    int[] triangleElementsOfCoping;
-    public Mesh meshOfCoping;
-
     private void Awake()
     {
         MakeData();
-        AddPier(true, .25f, .12f);
+        AddPier(true, true, .27f, .15f);
         Marge();
         chessmanType = ChessmanType.ROOK;
     }
@@ -21,8 +17,6 @@ public class ProcRook : Chessman
     // Start is called before the first frame update
     void Start()
     {
-
-        //CreateMesh();
 
     }
 
@@ -54,23 +48,6 @@ public class ProcRook : Chessman
         meshOfCoping = new Mesh();
         meshOfCoping.vertices = pointsOfCoping;
         meshOfCoping.triangles = triangleElementsOfCoping;
-    }
-
-    void Marge()
-    {
-        var combine = new CombineInstance[2];
-
-        combine[0].mesh = meshOfPier;
-        combine[0].transform = transform.localToWorldMatrix;
-
-        combine[1].mesh = meshOfCoping;
-        combine[1].transform = transform.localToWorldMatrix;
-
-        mesh = new Mesh();
-
-        mesh.CombineMeshes(combine);
-        GetComponent<MeshFilter>().mesh = mesh;
-        //GetComponent<Transform>().position = new Vector3(0f, 0f, 0f);
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

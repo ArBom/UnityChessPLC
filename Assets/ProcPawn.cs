@@ -10,21 +10,15 @@ public class ProcPawn : Chessman
 {
     private void Awake()
     {
-        mesh = GetComponent<MeshFilter>().mesh;
+        AddPier(false, true, .2f, .1f);
+        Marge();
         chessmanType = ChessmanType.PAWN;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        MakeData();
-        CreateMesh();
-    }
 
-
-    void MakeData()
-    {
-        AddPier(false, .42f, .15f);
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
