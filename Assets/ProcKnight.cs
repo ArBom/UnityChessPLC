@@ -4,20 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshCollider))]
 public class ProcKnight : Chessman
 {
     private void Awake()
     {
         MakeData();
-        AddPier(true, false, .3f, .11f);
+        AddPier(true, false, .26f, .11f);
         Marge();
+
         chessmanType = ChessmanType.KNIGHT;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        MeshCollider meshCollider = GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
     }
 
     void Update()
@@ -141,8 +144,6 @@ public class ProcKnight : Chessman
             19,24,27, 18,23,21, 18,25,23, 19,22,24, 19,20,22,
         };
 
-        meshOfCoping = new Mesh();
-        meshOfCoping.vertices = pointsOfCoping;
-        meshOfCoping.triangles = triangleElementsOfCoping;
+        MakeData2();
     }
 }

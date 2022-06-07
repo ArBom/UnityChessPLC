@@ -40,7 +40,7 @@ public class Chessboard : MonoBehaviour
         {
             for (ushort r=0; r!=8; ++r)
             {
-                var p = Instantiate(CubeR, new Vector3(c * 1.0f, 0, r * 1.0f), Quaternion.identity); //TODO size
+                var p = Instantiate(CubeR, new Vector3(c * 1.0f, -.06f, r * 1.0f), Quaternion.identity); //TODO size
                 p.GetComponent<CubeRS>().SetChequerPos(r, c);
                 chequers[c, r] = p.GetComponent<CubeRS>();
             }
@@ -52,6 +52,7 @@ public class Chessboard : MonoBehaviour
         Moves.confuting = new List<ChequerPos>();
 
         //chessmans
+        //white ones
         CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 1, row = 0 }, Assets.Color.White);
         CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 6, row = 0 }, Assets.Color.White);
 
@@ -65,6 +66,20 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 3, row = 0 }, Assets.Color.White);
 
         CreateChessman(ChessmanType.PAWN, new ChequerPos { column = 0, row = 1 }, Assets.Color.White);
+
+        //black ones
+        CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 1, row = 7 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 6, row = 7 }, Assets.Color.Black);
+
+        CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 2, row = 7 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 5, row = 7 }, Assets.Color.Black);
+
+        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 3, row = 3 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 7, row = 7 }, Assets.Color.Black);
+
+        CreateChessman(ChessmanType.KING, new ChequerPos { column = 3, row = 7 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
+
 
     }
 
@@ -133,7 +148,7 @@ public class Chessboard : MonoBehaviour
         {
             if (a.chequerPos.Value.row == row)
             {
-                //a.SetColor();
+                //a.SetRedColor();
             }
         }
     }
@@ -148,8 +163,6 @@ public class Chessboard : MonoBehaviour
 
     public void GiveColors()
     {
-        chequers[Moves.marked.column, Moves.marked.row].SetBlueColor();
-
         foreach (var c in Moves.possible)
         {
             chequers[c.column, c.row].SetGreenColor();
@@ -159,6 +172,8 @@ public class Chessboard : MonoBehaviour
         {
             chequers[c.column, c.row].SetRedColor();
         }
+
+        chequers[Moves.marked.column, Moves.marked.row].SetBlueColor();
     }
 
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos)

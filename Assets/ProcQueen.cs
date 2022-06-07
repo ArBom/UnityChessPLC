@@ -11,6 +11,7 @@ public class ProcQueen : Chessman
         MakeData();
         AddPier(true, true, .32f, .12f);
         Marge();
+
         chessmanType = ChessmanType.QUEEN;
     }
 
@@ -50,9 +51,7 @@ public class ProcQueen : Chessman
 
         };
 
-        meshOfCoping = new Mesh();
-        meshOfCoping.vertices = pointsOfCoping;
-        meshOfCoping.triangles = triangleElementsOfCoping;
+        MakeData2();
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

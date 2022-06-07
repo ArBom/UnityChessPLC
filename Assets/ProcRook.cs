@@ -11,6 +11,7 @@ public class ProcRook : Chessman
         MakeData();
         AddPier(true, true, .27f, .15f);
         Marge();
+
         chessmanType = ChessmanType.ROOK;
     }
 
@@ -45,9 +46,7 @@ public class ProcRook : Chessman
             49,48,47, 49,47,46, 49,46,45, 49,45,44, 49,44,43, 49,43,42, 49,42,41, 49,41,40, 49,40,39, 49,39,38, 49,38,37, 49,37,48,
         };
 
-        meshOfCoping = new Mesh();
-        meshOfCoping.vertices = pointsOfCoping;
-        meshOfCoping.triangles = triangleElementsOfCoping;
+        MakeData2();
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

@@ -11,6 +11,7 @@ public class ProcBishop : Chessman
         MakeData();
         AddPier(true, true, .275f, .15f);
         Marge();
+
         chessmanType = ChessmanType.BISHOP;
     }
 
@@ -44,9 +45,7 @@ public class ProcBishop : Chessman
             75,74,98, 76,75,98, 77,76,98, 78,77,98, 79,78,98, 80,79,98, 81,80,98, 82,81,98, 83,82,98, 84,83,98, 85,84,98, 86,85,98, 87,86,98, 88,87,98, 89,88,98, 90,89,98, 91,90,98, 92,91,98, 93,92,98, 94,93,98, 95,94,98, 96,95,98, 97,96,98,
         };
 
-        meshOfCoping = new Mesh();
-        meshOfCoping.vertices = pointsOfCoping;
-        meshOfCoping.triangles = triangleElementsOfCoping;
+        MakeData2();
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()

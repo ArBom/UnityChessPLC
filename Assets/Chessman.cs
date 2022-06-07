@@ -11,14 +11,20 @@ namespace Assets
     {
         public Chessboard chessboard;
         public Color color { get; private set; }
+        public Material PureMaterial;
+        public Material MuddyMaterial;
+
+        private Renderer rend;
+
         protected ChessmanType chessmanType;
-        public Mesh mesh;
+        protected Mesh mesh;
         public ChequerPos? position = null;
         const float chSize = 1;
 
         protected Vector3[] pointsOfPier;
+        protected Vector2[] uvOfPier;
         protected int[] triangleElementsOfpier;
-        public Mesh meshOfPier;
+        protected Mesh meshOfPier;
 
         protected Vector3[] pointsOfCoping;
         protected int[] triangleElementsOfCoping;
@@ -53,6 +59,7 @@ namespace Assets
             mesh = new Mesh();
 
             mesh.CombineMeshes(combine);
+            mesh.RecalculateNormals();
             GetComponent<MeshFilter>().mesh = mesh;
         }
 
@@ -62,22 +69,37 @@ namespace Assets
             {
                 position = newPos;
                 color = newColor;
+                this.transform.Translate(chSize * position.Value.column, 0, chSize * position.Value.row);
 
                 if (color == Color.Black)
                 {
                     this.transform.Rotate(new Vector3(0, 1, 0), 90);
+                    rend.material = MuddyMaterial;
                 }
                 else
                 {
                     this.transform.Rotate(new Vector3(0, 1, 0), -90);
-                }
-
-                this.transform.Translate(chSize * position.Value.row, 0, chSize * -position.Value.column);
+                    rend.material = PureMaterial;
+                }                    
 
                 return true;
             }
 
             return false;
+        }
+
+        void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+                {
+                    chessboard.CleanColor();
+                    chessboard.Moves = Moves();
+                    chessboard.GiveColors();
+                }
+            }
         }
 
         protected void AddPier(bool ripple, bool jabot, float high, float radius)
@@ -154,6 +176,29 @@ namespace Assets
                 };
             }
 
+            ///uv below
+            float maxHihgt = PierPoints.Max(point => point.y);
+            float minHight = PierPoints.Min(point => point.y);
+            float maxWide = PierPoints.Max(point => point.z);
+            float minWide = PierPoints.Min(point => point.z);
+            float maxDeph = PierPoints.Max(point => point.x);
+            float minDeph = PierPoints.Min(point => point.x);
+
+            float scaleOfTexture = 1.5f;
+            uvOfPier = new Vector2[PierPoints.Length];
+            for(int index = 0; index < uvOfPier.Length; index++)
+            {
+                if (PierPoints[index] != null)
+                {
+                    float PointHigh = (PierPoints[index].y - minHight) / (maxHihgt - minHight);
+                    float PointWide = (PierPoints[index].z - minWide) / (maxWide - minWide);
+                    float PointDeph = (PierPoints[index].x - minDeph) / (maxDeph - minDeph);
+
+                    uvOfPier[index] = new Vector2((float)Math.Pow(scaleOfTexture * (PointDeph+1), PointHigh), 2*scaleOfTexture * PointWide);
+                }
+            }
+            ///uv up
+
             pointsOfPier = PierPoints;
             triangleElementsOfpier = PierTriangleElements;
 
@@ -161,6 +206,41 @@ namespace Assets
             meshOfPier.Clear();
             meshOfPier.vertices = PierPoints;
             meshOfPier.triangles = PierTriangleElements;
+            meshOfPier.uv = uvOfPier;
+
+            rend = GetComponent<Renderer>();
+        }
+
+        protected void MakeData2()
+        {
+            meshOfCoping = new Mesh();
+            meshOfCoping.vertices = pointsOfCoping;
+            meshOfCoping.triangles = triangleElementsOfCoping;
+
+            ///uv below
+            float maxHihgt = pointsOfCoping.Max(point => point.y);
+            float minHight = pointsOfCoping.Min(point => point.y);
+            float maxWide = pointsOfCoping.Max(point => point.z);
+            float minWide = pointsOfCoping.Min(point => point.z);
+            float maxDeph = pointsOfCoping.Max(point => point.x);
+            float minDeph = pointsOfCoping.Min(point => point.x);
+
+            float scaleOfTexture = .75f;
+            var uvOfCoping = new Vector2[pointsOfCoping.Length];
+            for (int index = 0; index < uvOfCoping.Length; index++)
+            {
+                if (pointsOfCoping[index] != null)
+                {
+                    float PointHigh = (pointsOfCoping[index].y - minHight) / (maxHihgt - minHight);
+                    float PointWide = (pointsOfCoping[index].z - minWide) / (maxWide - minWide);
+                    float PointDeph = (pointsOfCoping[index].x - minDeph) / (maxDeph - minDeph);
+
+                    uvOfCoping[index] = new Vector2(1-(float)Math.Pow(scaleOfTexture * (PointDeph + 1), PointHigh), 1- (2 * scaleOfTexture * PointWide));
+                }
+            }
+            ///uv up
+
+            meshOfCoping.uv = uvOfCoping;
         }
 
         public abstract (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves();
