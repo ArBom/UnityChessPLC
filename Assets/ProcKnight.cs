@@ -28,10 +28,10 @@ public class ProcKnight : Chessman
 
     }
 
-    private void OnMouseUpAsButton()
+    /*private void OnMouseUpAsButton()
     {
         
-    }
+    }*/
 
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves() //IN: position of moving chessman

@@ -26,8 +26,6 @@ public class ProcPawn : Chessman
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
-        bool nieDrgnal = true; //TODO change it
-
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
 

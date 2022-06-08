@@ -57,18 +57,26 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        Renderer rend = GetComponent<Renderer>();
+        /*Renderer rend = GetComponent<Renderer>();
         rend.material.shader = Shader.Find("Specular");
-        rend.material.SetColor("_Color", UnityEngine.Color.blue);
+        rend.material.SetColor("_Color", UnityEngine.Color.blue);*/
 
-        if(this.chessman != null && chequerPos.HasValue)
+        if (this.chessman != null && chequerPos.HasValue)
         {
-            chessboard.CleanColor();
+            if (chessboard.TryMoveInto(chequerPos.Value))
+                return;
+        }
+
+        if (this.chessman != null && chequerPos.HasValue)
+        {
+            chessboard.UnmarkAndSwitchoffLights();
             chessboard.Moves = chessman.Moves();
             chessboard.GiveColors();
         }
-
-        //this.SetRedColor();
+        else if (this.chessman == null && chequerPos.HasValue)
+        {
+            chessboard.TryMoveInto(chequerPos.Value);
+        }
     }
 
     // Update is called once per frame
@@ -122,19 +130,11 @@ public class CubeRS : MonoBehaviour
 
     public void SetGreenColor()
     {
-        /*lightOfCube.color = UnityEngine.Color.green;
-        lightOfCube.spotAngle = 23;
-        lightOfCube.range = lightOCRange;*/
         l_Animator.Play("SwitchGreenLightOn");
     }
 
     public void SetBlueColor()
     {
-        //rend.material.SetColor("_Color", UnityEngine.Color.cyan);
-        //ColorofSelection = rend.material.GetColor("_Color");
-        /*lightOfCube.color = UnityEngine.Color.blue;
-        lightOfCube.spotAngle = 30;
-        lightOfCube.range = lightOCRange;*/
         l_Animator.Play("SwitchBlueLightOn");
     }
 }

@@ -140,21 +140,13 @@ public class Chessboard : MonoBehaviour
         chequers[newChequerPos.column, newChequerPos.row].SetChessman(newChessman);
     }
 
-
-
-    public void Clicked(ushort row)
+    public void UnmarkAndSwitchoffLights()
     {
-        foreach (var a in chequers)
-        {
-            if (a.chequerPos.Value.row == row)
-            {
-                //a.SetRedColor();
-            }
-        }
-    }
 
-    public void CleanColor()
-    {
+        Moves.marked = new ChequerPos();
+        Moves.possible = new List<ChequerPos>();
+        Moves.confuting = new List<ChequerPos>();
+
         foreach (var c in chequers)
         {
             c.ResetColor();
@@ -174,6 +166,41 @@ public class Chessboard : MonoBehaviour
         }
 
         chequers[Moves.marked.column, Moves.marked.row].SetBlueColor();
+    }
+
+    public bool TryMoveInto(ChequerPos newChequerPos)
+    {
+        if(Moves.possible.Exists(o => 
+                                 o.column == newChequerPos.column &&
+                                 o.row == newChequerPos.row))                                
+        {
+            MoveTo(newChequerPos);
+            return true;
+        }
+        else if(Moves.confuting.Exists(o =>
+                                       o.column == newChequerPos.column &&
+                                       o.row == newChequerPos.row))
+        {
+            ConfuteAndMove(newChequerPos);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void MoveTo(ChequerPos newChequerPos)
+    {
+        chequers[newChequerPos.column, newChequerPos.row].chessman = chequers[Moves.marked.column, Moves.marked.row].chessman;
+        chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
+        chequers[Moves.marked.column, Moves.marked.row].chessman = null;
+
+        UnmarkAndSwitchoffLights();
+    }
+
+    private void ConfuteAndMove(ChequerPos newChequerPos)
+    {
+        DestroyImmediate(chequers[newChequerPos.column, newChequerPos.row].chessman.gameObject);
+        MoveTo(newChequerPos);
     }
 
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos)

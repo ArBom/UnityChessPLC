@@ -20,6 +20,7 @@ namespace Assets
         protected Mesh mesh;
         public ChequerPos? position = null;
         const float chSize = 1;
+        protected bool nieDrgnal = true;
 
         protected Vector3[] pointsOfPier;
         protected Vector2[] uvOfPier;
@@ -63,24 +64,34 @@ namespace Assets
             GetComponent<MeshFilter>().mesh = mesh;
         }
 
-        public bool SetValues(ChequerPos newPos, Assets.Color newColor)
+        public bool SetValues(ChequerPos newPos, Assets.Color? newColor)
         {
-            if (!position.HasValue && newPos.row < 8 && newPos.column < 8 && newPos.row >=0 && newPos.column >= 0)
+            if (newPos.row < 8 && newPos.column < 8 && newPos.row >=0 && newPos.column >= 0)
             {
                 position = newPos;
-                color = newColor;
-                this.transform.Translate(chSize * position.Value.column, 0, chSize * position.Value.row);
 
-                if (color == Color.Black)
+                if (newColor.HasValue)
+                    color = newColor.Value;
+
+                this.transform.localPosition = new Vector3(chSize * position.Value.column, 0, chSize * position.Value.row);
+
+                if (newColor.HasValue)
                 {
-                    this.transform.Rotate(new Vector3(0, 1, 0), 90);
-                    rend.material = MuddyMaterial;
+                    color = newColor.Value;
+
+                    if (color == Color.Black)
+                    {
+                        this.transform.Rotate(new Vector3(0, 1, 0), 90);
+                        rend.material = MuddyMaterial;
+                    }
+                    else
+                    {
+                        this.transform.Rotate(new Vector3(0, 1, 0), -90);
+                        rend.material = PureMaterial;
+                    }
                 }
                 else
-                {
-                    this.transform.Rotate(new Vector3(0, 1, 0), -90);
-                    rend.material = PureMaterial;
-                }                    
+                    nieDrgnal = false;
 
                 return true;
             }
@@ -90,7 +101,7 @@ namespace Assets
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit hit;
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
@@ -99,7 +110,7 @@ namespace Assets
                     chessboard.Moves = Moves();
                     chessboard.GiveColors();
                 }
-            }
+            }*/
         }
 
         protected void AddPier(bool ripple, bool jabot, float high, float radius)
