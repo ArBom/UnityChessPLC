@@ -45,10 +45,10 @@ public class ProcPawn : Chessman
             }
         }
 
-        if (chessboard.Check(null, new ChequerPos() { column = (short)(position.Value.column + 1), row = (short)(position.Value.row + direction) }) == CanMoveInto.TakenO)
+        if (chessboard.Check(this.color, new ChequerPos() { column = (short)(position.Value.column + 1), row = (short)(position.Value.row + direction) }) == CanMoveInto.TakenO)
             confuting.Add(new ChequerPos() { column = (short)(position.Value.column + 1), row = (short)(position.Value.row + direction) });
 
-        if (chessboard.Check(null, new ChequerPos() { column = (short)(position.Value.column - 1), row = (short)(position.Value.row + direction) }) == CanMoveInto.TakenO)
+        if (chessboard.Check(this.color, new ChequerPos() { column = (short)(position.Value.column - 1), row = (short)(position.Value.row + direction) }) == CanMoveInto.TakenO)
             confuting.Add(new ChequerPos() { column = (short)(position.Value.column - 1), row = (short)(position.Value.row + direction) });
 
         ChequerPos marked = this.position.Value;

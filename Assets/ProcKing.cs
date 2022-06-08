@@ -6,8 +6,6 @@ using Assets;
 [RequireComponent(typeof(MeshFilter))]
 public class ProcKing : Chessman
 {
-    private bool nieDrgnal = true;
-
     private void Awake()
     {
         MakeData();

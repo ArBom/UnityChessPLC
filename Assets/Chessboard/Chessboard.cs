@@ -80,7 +80,7 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.KING, new ChequerPos { column = 3, row = 7 }, Assets.Color.Black);
         CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
 
-
+        CreateChessman(ChessmanType.PAWN, new ChequerPos { column = 1, row = 2 }, Assets.Color.Black);
     }
 
     // Start is called before the first frame update
