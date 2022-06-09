@@ -18,7 +18,6 @@ public class CubeRS : MonoBehaviour
     public string NameOfThis { get; protected set; }
     public Assets.Color Color { get; protected set; }
 
-    private float lightOCRange;
     private Animation l_Animator;
 
     // Start is called before the first frame update
@@ -29,12 +28,10 @@ public class CubeRS : MonoBehaviour
         if (Color == Assets.Color.Black)
         {
             rend.material = PureMaterial;
-            lightOCRange = 45;
         }
         else
         {
             rend.material = MuddyMaterial;
-            lightOCRange = 15;
         }
 
         //lightOfCube.spotAngle = 0;

@@ -142,7 +142,6 @@ public class Chessboard : MonoBehaviour
 
     public void UnmarkAndSwitchoffLights()
     {
-
         Moves.marked = new ChequerPos();
         Moves.possible = new List<ChequerPos>();
         Moves.confuting = new List<ChequerPos>();
@@ -199,8 +198,8 @@ public class Chessboard : MonoBehaviour
 
     private void ConfuteAndMove(ChequerPos newChequerPos)
     {
-        DestroyImmediate(chequers[newChequerPos.column, newChequerPos.row].chessman.gameObject);
-        MoveTo(newChequerPos);
+        chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
+        chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
     }
 
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos)

@@ -17,13 +17,6 @@ public class ProcPawn : Chessman
         chessmanType = ChessmanType.PAWN;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-        meshCollider.sharedMesh = mesh;
-    }
-
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
     {
         List<ChequerPos> possible = new List<ChequerPos>();
