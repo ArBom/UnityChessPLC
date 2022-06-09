@@ -34,7 +34,6 @@ public class CubeRS : MonoBehaviour
             rend.material = MuddyMaterial;
         }
 
-        //lightOfCube.spotAngle = 0;
         StartColor = rend.material.GetColor("_Color");
         l_Animator = lightOfCube.GetComponent<Animation>();
     }
@@ -48,8 +47,6 @@ public class CubeRS : MonoBehaviour
     private void OnMouseExit()
     {
         rend.material.SetColor("_Color", ColorofSelection);
-
-        print(rend.material.GetColor("_Color"));
     }
 
     private void OnMouseUpAsButton()

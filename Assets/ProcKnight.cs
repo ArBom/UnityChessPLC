@@ -16,18 +16,6 @@ public class ProcKnight : Chessman
         chessmanType = ChessmanType.KNIGHT;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-        meshCollider.sharedMesh = mesh;
-    }
-
-    void Update()
-    {
-
-    }
-
     /*private void OnMouseUpAsButton()
     {
         

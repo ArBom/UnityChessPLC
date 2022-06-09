@@ -189,9 +189,9 @@ public class Chessboard : MonoBehaviour
 
     private void MoveTo(ChequerPos newChequerPos)
     {
-        chequers[newChequerPos.column, newChequerPos.row].chessman = chequers[Moves.marked.column, Moves.marked.row].chessman;
+        //chequers[newChequerPos.column, newChequerPos.row].chessman = chequers[Moves.marked.column, Moves.marked.row].chessman;
         chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
-        chequers[Moves.marked.column, Moves.marked.row].chessman = null;
+        //chequers[Moves.marked.column, Moves.marked.row].chessman = null;
 
         UnmarkAndSwitchoffLights();
     }

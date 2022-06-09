@@ -15,11 +15,6 @@ public class ProcKing : Chessman
         chessmanType = ChessmanType.KING;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     void MakeData()
     {

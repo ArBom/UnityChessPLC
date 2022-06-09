@@ -15,12 +15,6 @@ public class ProcRook : Chessman
         chessmanType = ChessmanType.ROOK;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     void MakeData()
     {
         pointsOfCoping = new Vector3[] 

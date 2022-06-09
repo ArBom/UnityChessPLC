@@ -21,7 +21,11 @@ namespace Assets
 
         protected ChessmanType chessmanType;
         protected Mesh mesh;
+
         public ChequerPos? position = null;
+        private ChequerPos newPosition;
+        private float ratioOfMove = 1f;
+        private const float speed = 0.4f;
 
         private Animation chman_Animator;
 
@@ -40,6 +44,27 @@ namespace Assets
 
         protected Vector3[] points;
         protected int[] triangleElements;
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (ratioOfMove < 1)
+            {
+                ratioOfMove += speed * Time.deltaTime;
+
+                if (ratioOfMove >= 1)
+                {
+                    ratioOfMove = 1;
+                    chessboard.chequers[newPosition.column, newPosition.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
+                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
+                    position = newPosition;
+                }
+
+                this.transform.localPosition = new Vector3(position.Value.column * (1 - ratioOfMove) + newPosition.column * ratioOfMove, 
+                                                           0, 
+                                                           position.Value.row * (1 - ratioOfMove) + newPosition.row * ratioOfMove);
+            }
+        }
 
         public int s7ChType()
         {
@@ -80,12 +105,16 @@ namespace Assets
         {
             if (newPos.row < 8 && newPos.column < 8 && newPos.row >=0 && newPos.column >= 0)
             {
-                position = newPos;
-
-                if (newColor.HasValue)
-                    color = newColor.Value;
-
-                this.transform.localPosition = new Vector3(chSize * position.Value.column, 0, chSize * position.Value.row);
+                if (this.position.HasValue)
+                {
+                    ratioOfMove = 0;
+                    newPosition = newPos;
+                }
+                else
+                {
+                    position = newPos;
+                    this.transform.localPosition = new Vector3(position.Value.column, 0, position.Value.row);
+                }
 
                 if (newColor.HasValue)
                 {
@@ -109,20 +138,6 @@ namespace Assets
             }
 
             return false;
-        }
-
-        void Update()
-        {
-            /*if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-                {
-                    chessboard.CleanColor();
-                    chessboard.Moves = Moves();
-                    chessboard.GiveColors();
-                }
-            }*/
         }
 
         protected void AddPier(bool ripple, bool jabot, float high, float radius)
@@ -262,7 +277,6 @@ namespace Assets
 
         public void Confution()
         {
-            print("confution void");
             chman_Animator.Play("ChessmanConfution");
             //IMPORTANT: Animation starts ConfutionEvent() below
         }

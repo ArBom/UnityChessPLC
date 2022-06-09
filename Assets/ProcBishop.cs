@@ -15,12 +15,6 @@ public class ProcBishop : Chessman
         chessmanType = ChessmanType.BISHOP;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     void MakeData()
     {
         pointsOfCoping = new Vector3[]

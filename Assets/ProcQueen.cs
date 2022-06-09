@@ -15,18 +15,6 @@ public class ProcQueen : Chessman
         chessmanType = ChessmanType.QUEEN;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void MakeData()
     {
         pointsOfCoping = new Vector3[] {
