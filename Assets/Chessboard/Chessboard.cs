@@ -28,6 +28,14 @@ public class Chessboard : MonoBehaviour
     public GameObject ChBishop;
     public GameObject ChPawn;
 
+    public Assets.Color actualTurn
+    {
+        get;
+        private set;
+    }
+
+    public delegate void TurnChange(Assets.Color newColor);
+    public event TurnChange turnChange;
 
     public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves;
 
@@ -81,6 +89,8 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
 
         CreateChessman(ChessmanType.PAWN, new ChequerPos { column = 1, row = 2 }, Assets.Color.Black);
+
+        actualTurn = Assets.Color.White;
     }
 
     // Start is called before the first frame update
@@ -192,6 +202,7 @@ public class Chessboard : MonoBehaviour
         //chequers[newChequerPos.column, newChequerPos.row].chessman = chequers[Moves.marked.column, Moves.marked.row].chessman;
         chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
         //chequers[Moves.marked.column, Moves.marked.row].chessman = null;
+        ChangeTurn();
 
         UnmarkAndSwitchoffLights();
     }
@@ -200,6 +211,16 @@ public class Chessboard : MonoBehaviour
     {
         chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
         chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
+    }
+
+    private void ChangeTurn()
+    {
+        if (actualTurn == Assets.Color.White)
+            actualTurn = Assets.Color.Black;
+        else
+            actualTurn = Assets.Color.White;
+
+        turnChange?.Invoke(actualTurn);
     }
 
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos)

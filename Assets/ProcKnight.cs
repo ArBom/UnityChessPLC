@@ -21,7 +21,6 @@ public class ProcKnight : Chessman
         
     }*/
 
-
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves() //IN: position of moving chessman
     {
         List<ChequerPos> possible = new List<ChequerPos>();

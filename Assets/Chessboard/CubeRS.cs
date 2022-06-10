@@ -61,7 +61,7 @@ public class CubeRS : MonoBehaviour
                 return;
         }
 
-        if (this.chessman != null && chequerPos.HasValue)
+        if (this.chessman != null && chequerPos.HasValue && chessboard.actualTurn == this.chessman.color)
         {
             chessboard.UnmarkAndSwitchoffLights();
             chessboard.Moves = chessman.Moves();
