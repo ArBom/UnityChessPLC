@@ -59,6 +59,9 @@ public class ProcKing : Chessman
         ChequerPos tempChequerPos = new ChequerPos();
         CanMoveInto canMoveInto;
 
+        //N & S There is no Pama-Krabbégo castling https://pl.wikipedia.org/wiki/Roszada_Pama-Krabbégo
+
+        //TODO dopisać sprawzenie czy pole nie jest szachowane
 
         //N
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)position.Value.column };
@@ -91,6 +94,11 @@ public class ProcKing : Chessman
         if (canMoveInto == CanMoveInto.Empty)
         {
             possible.Add(tempChequerPos);
+
+            if (nieDrgnal)
+            {
+                //TODO sprawdzenie roszady column + 2
+            }
         }
         else if (canMoveInto == CanMoveInto.TakenO)
         {
@@ -139,6 +147,10 @@ public class ProcKing : Chessman
         if (canMoveInto == CanMoveInto.Empty)
         {
             possible.Add(tempChequerPos);
+            if (nieDrgnal)
+            {
+                //TODO sprawdzenie roszady column - 2
+            }
         }
         else if (canMoveInto == CanMoveInto.TakenO)
         {

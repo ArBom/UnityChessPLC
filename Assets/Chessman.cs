@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Assets.cs;
 
 namespace Assets
 {
@@ -19,7 +20,7 @@ namespace Assets
 
         private Renderer rend;
 
-        protected ChessmanType chessmanType;
+        protected ChessmanType chessmanType = ChessmanType.EMPTY;
         protected Mesh mesh;
 
         public ChequerPos? position = null;

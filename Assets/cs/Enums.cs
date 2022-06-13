@@ -29,6 +29,8 @@ namespace Assets
         Empty = 1,
         TakenY = 2,
         TakenO = 3,
+        EmptyButChecked = 4,
+        WRONGARG
     }
 
     public struct ChequerPos

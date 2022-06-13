@@ -1,6 +1,7 @@
 ﻿using Assets;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Sharp7;
@@ -38,6 +39,7 @@ public class Chessboard : MonoBehaviour
     public event TurnChange turnChange;
 
     public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves;
+    public (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) Checked;
 
     private void Awake()
     {
@@ -48,7 +50,7 @@ public class Chessboard : MonoBehaviour
         {
             for (ushort r=0; r!=8; ++r)
             {
-                var p = Instantiate(CubeR, new Vector3(c * 1.0f, -.06f, r * 1.0f), Quaternion.identity); //TODO size
+                var p = Instantiate(CubeR, new Vector3(c * 1.0f, -.06f, r * 1.0f), Quaternion.identity);
                 p.GetComponent<CubeRS>().SetChequerPos(r, c);
                 chequers[c, r] = p.GetComponent<CubeRS>();
             }
@@ -59,6 +61,10 @@ public class Chessboard : MonoBehaviour
         Moves.possible = new List<ChequerPos>();
         Moves.confuting = new List<ChequerPos>();
 
+        //list act chequer
+        Checked.Byblack = new List<ChequerPos>();
+        Checked.ByWhite = new List<ChequerPos>();
+
         //chessmans
         //white ones
         CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 1, row = 0 }, Assets.Color.White);
@@ -67,13 +73,14 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 2, row = 0 }, Assets.Color.White);
         CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 5, row = 0 }, Assets.Color.White);
 
-        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 3, row = 3 }, Assets.Color.White);
+        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 0, row = 0 }, Assets.Color.White);
         CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 7, row = 0 }, Assets.Color.White);
 
         CreateChessman(ChessmanType.KING, new ChequerPos { column = 4, row = 0 }, Assets.Color.White);
         CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 3, row = 0 }, Assets.Color.White);
 
-        CreateChessman(ChessmanType.PAWN, new ChequerPos { column = 0, row = 1 }, Assets.Color.White);
+        for (short wp = 0; wp<8; ++wp)
+            CreateChessman(ChessmanType.PAWN, new ChequerPos { column = wp, row = 1 }, Assets.Color.White);
 
         //black ones
         CreateChessman(ChessmanType.KNIGHT, new ChequerPos { column = 1, row = 7 }, Assets.Color.Black);
@@ -82,14 +89,17 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 2, row = 7 }, Assets.Color.Black);
         CreateChessman(ChessmanType.BISHOP, new ChequerPos { column = 5, row = 7 }, Assets.Color.Black);
 
-        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 3, row = 3 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 0, row = 7 }, Assets.Color.Black);
         CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 7, row = 7 }, Assets.Color.Black);
 
         CreateChessman(ChessmanType.KING, new ChequerPos { column = 3, row = 7 }, Assets.Color.Black);
         CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
 
-        CreateChessman(ChessmanType.PAWN, new ChequerPos { column = 1, row = 2 }, Assets.Color.Black);
+        for (short bp = 0; bp < 8; ++bp)
+            CreateChessman(ChessmanType.PAWN, new ChequerPos { column = bp, row = 6 }, Assets.Color.Black);
 
+
+        //Set the actual turn
         actualTurn = Assets.Color.White;
     }
 
@@ -103,6 +113,36 @@ public class Chessboard : MonoBehaviour
     void Update()
     {
 
+    }
+
+    private (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) CheckChecked(CubeRS[,] chequers)
+    {
+        HashSet<ChequerPos> ByWhiteHS = new HashSet<ChequerPos>();
+        HashSet<ChequerPos> ByBlackHS = new HashSet<ChequerPos>();
+
+        foreach (var ChM in chequers)
+        {
+            if (ChM.chessman != null)
+            {
+                List<ChequerPos> confuting = ChM.chessman.Moves().confuting;
+
+                if(ChM.chessman.color == Assets.Color.White)
+                {
+                    foreach (var ChP in confuting)
+                        ByWhiteHS.Add(ChP);
+                }
+                else
+                {
+                    foreach (var ChP in confuting)
+                        ByBlackHS.Add(ChP);
+                }
+            }      
+        }
+
+        List<ChequerPos> ByWhite = new List<ChequerPos>(ByWhiteHS);
+        List<ChequerPos> ByBlack = new List<ChequerPos>(ByBlackHS);
+
+        return (ByWhite, ByBlack);
     }
 
     private void CreateChessman(ChessmanType newChessmanType, ChequerPos newChequerPos, Assets.Color color)
@@ -223,26 +263,56 @@ public class Chessboard : MonoBehaviour
         turnChange?.Invoke(actualTurn);
     }
 
-    public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos)
+    public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos, List<ChequerPos> ByWhite = null, List<ChequerPos> ByBlack = null, CubeRS[,] TableOfChequers = null)
     {
+        CubeRS[,] LocalChequers;
+
+        if (TableOfChequers != null)
+        {
+            LocalChequers = TableOfChequers;
+        }
+        else
+        {
+            LocalChequers = chequers;
+        }
+
+
         if (Pos.column > 7 || Pos.row > 7 || Pos.column < 0 || Pos.row < 0)
         {
             return CanMoveInto.NoExist;
         }
 
-        if (chequers[Pos.column, Pos.row].chessman == null)
+        if (LocalChequers[Pos.column, Pos.row].chessman == null) //Chequer is empty
         {
-            return CanMoveInto.Empty;
+            if (!YourColor.HasValue || ByBlack == null || ByWhite == null) //Your color isnt inmportant
+                return CanMoveInto.Empty;
+            else if (YourColor == Assets.Color.White && ByBlack != null) //you are white && you need info about chequed
+            {
+                if (ByBlack.Exists(cp =>
+                                   cp.column == Pos.column &&
+                                   cp.row == Pos.row))
+                    return CanMoveInto.EmptyButChecked; //You are white && you want to move checked chequer
+                else return CanMoveInto.Empty; //You are white && you want to move to the save chequer
+            }
+            else if (YourColor == Assets.Color.Black && ByWhite != null) //you are black && you need info about chequed
+            {
+                if (ByWhite.Exists(cp =>
+                                    cp.column == Pos.column &&
+                                    cp.row == Pos.row))
+                    return CanMoveInto.EmptyButChecked; //You are black && you want to move checked chequer
+                else return CanMoveInto.Empty; //You are black && you want to move to the save chequer
+            }
+            else return CanMoveInto.Empty; //You are black or white && you Dont need info about chequed
         }
 
         if (YourColor.HasValue)
         {
-            if (chequers[Pos.column, Pos.row].chessman.color == YourColor)
+            if (LocalChequers[Pos.column, Pos.row].chessman.color == YourColor)
             {
                 return CanMoveInto.TakenY;
             }
 
-            if (chequers[Pos.column, Pos.row].chessman.color != YourColor)
+            if (LocalChequers[Pos.column, Pos.row].chessman.color != YourColor)
             {
                 return CanMoveInto.TakenO;
             }
