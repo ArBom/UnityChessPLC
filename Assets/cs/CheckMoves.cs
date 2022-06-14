@@ -11,8 +11,11 @@ namespace Assets.cs
     {
         public static Chessboard chessboard;
 
-        public static CanMoveInto checkCastling(Assets.Color YourColor, bool longCastling, CubeRS[,] TableOfChequers = null)
+        public static bool checkCastlingPos(Assets.Color YourColor, bool longCastling, List<ChequerPos> check, CubeRS[,] TableOfChequers = null)
         {
+            int Row = YourColor == Assets.Color.White ? 1 : 6;
+            int RookCol = longCastling ? 0 : 7;
+
             CubeRS[,] LocalChequers;
 
             if (TableOfChequers != null)
@@ -24,18 +27,84 @@ namespace Assets.cs
                 LocalChequers = chessboard.chequers;
             }
 
-            /*
-            https://pl.wikipedia.org/wiki/Roszada
-            król nie wykonał ruchu od początku partii,
-            wieża uczestnicząca w roszadzie nie wykonała ruchu od początku partii,
-            pomiędzy królem i tą wieżą nie ma innych bierek,
-            król nie jest szachowany,
-            pole, przez które przejdzie król nie jest atakowane przez bierki przeciwnika,
-            roszada nie spowoduje, że król znajdzie się pod szachem.
-            król i wieża znajdują się na tej samej linii (białe na pierwszej, a czarne – na ósmej linii).
-            */
+            //We skazananych polach w ogóle są bierki
+            if (LocalChequers[4, Row].chessman == null || LocalChequers[RookCol, Row].chessman == null)
+                return false;
 
-            return CanMoveInto.NoExist;
+            //https://pl.wikipedia.org/wiki/Roszada
+            //król nie wykonał ruchu od początku partii,
+            if (!LocalChequers[4, Row].chessman.nieDrgnal)
+                return false;
+
+            //wieża uczestnicząca w roszadzie nie wykonała ruchu od początku partii,
+            if (!LocalChequers[RookCol, Row].chessman.nieDrgnal)
+                return false;
+
+            //pomiędzy królem i tą wieżą nie ma innych bierek,
+            bool Others = false;
+
+            if (longCastling)
+            {
+                for (int ColCh = 1; ColCh<4; ColCh++)
+                {
+                    if (LocalChequers[ColCh, Row].chessman != null)
+                        Others = true;
+                }
+            }
+            else
+            {
+                for (int ColCh = 5; ColCh < 7; ColCh++)
+                {
+                    if (LocalChequers[ColCh, Row].chessman != null)
+                        Others = true;
+                }
+            }
+
+            if (Others)
+                return false;
+
+            //król nie jest szachowany,
+            if (check.Exists(c =>
+                             c.column == 4 &&
+                             c.row == Row))
+                return false;
+
+            //pole, przez które przejdzie król nie jest atakowane przez bierki przeciwnika,
+            if (longCastling)
+            {
+                if (check.Exists(c =>
+                                 c.column == 3 &&
+                                 c.row == Row))
+                    return false;
+            }
+            else
+            {
+                if (check.Exists(c =>
+                                 c.column == 5 &&
+                                 c.row == Row))
+                    return false;
+            }
+
+            //roszada nie spowoduje, że król znajdzie się pod szachem.
+            if (longCastling)
+            {
+                if (check.Exists(c =>
+                                 c.column == 2 &&
+                                 c.row == Row))
+                    return false;
+            }
+            else
+            {
+                if (check.Exists(c =>
+                                 c.column == 6 &&
+                                 c.row == Row))
+                    return false;
+            }
+
+            //król i wieża znajdują się na tej samej linii (białe na pierwszej, a czarne – na ósmej linii).
+            //Zapewnione sposobem implementacji powyższego
+
+            return true;
         }
 
         public static CanMoveInto CheckMove(Assets.Color? YourColor, ChequerPos Pos, List<ChequerPos> ByWhite = null, List<ChequerPos> ByBlack = null, CubeRS[,] TableOfChequers = null)

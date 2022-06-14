@@ -20,11 +20,17 @@ namespace Assets
 
         private Renderer rend;
 
-        protected ChessmanType chessmanType = ChessmanType.EMPTY;
+        protected ChessmanType _chessmanType = ChessmanType.EMPTY;
+        public ChessmanType chessmanType
+        {
+            protected set { _chessmanType = value; }
+            get { return _chessmanType; }
+        }
+
         protected Mesh mesh;
 
         public ChequerPos? position = null;
-        private ChequerPos newPosition;
+        private ChequerPos oldPosition;
         private float ratioOfMove = 1f;
         private const float speed = 0.4f;
 
@@ -32,7 +38,12 @@ namespace Assets
 
         //TODO posprzątać poniższe
         const float chSize = 1;
-        protected bool nieDrgnal = true;
+        protected bool _nieDrgnal = true;
+        public bool nieDrgnal
+        {
+            protected set { _nieDrgnal = value; }
+            get { return _nieDrgnal; }
+        }
 
         protected Vector3[] pointsOfPier;
         protected Vector2[] uvOfPier;
@@ -56,14 +67,11 @@ namespace Assets
                 if (ratioOfMove >= 1)
                 {
                     ratioOfMove = 1;
-                    chessboard.chequers[newPosition.column, newPosition.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
-                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
-                    position = newPosition;
                 }
 
-                this.transform.localPosition = new Vector3(position.Value.column * (1 - ratioOfMove) + newPosition.column * ratioOfMove, 
+                this.transform.localPosition = new Vector3(position.Value.column * ratioOfMove + oldPosition.column * (1 - ratioOfMove), 
                                                            0, 
-                                                           position.Value.row * (1 - ratioOfMove) + newPosition.row * ratioOfMove);
+                                                           position.Value.row * ratioOfMove + oldPosition.row * (1 - ratioOfMove));
             }
         }
 
@@ -108,8 +116,12 @@ namespace Assets
             {
                 if (this.position.HasValue)
                 {
+                    chessboard.chequers[newPos.column, newPos.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
+                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
+                    oldPosition = position.Value;
+                    position = newPos;
+
                     ratioOfMove = 0;
-                    newPosition = newPos;
                 }
                 else
                 {

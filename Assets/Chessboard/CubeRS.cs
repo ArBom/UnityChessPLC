@@ -20,6 +20,26 @@ public class CubeRS : MonoBehaviour
 
     private Animation l_Animator;
 
+    private bool _isKingCheckedHere = false;
+    public bool isKingCheckedHere
+    {
+        get { return _isKingCheckedHere; }
+        set
+        { 
+            _isKingCheckedHere = value;
+            if (_isKingCheckedHere)
+            {
+                l_Animator.Stop();
+                l_Animator.Play("KingInDanger");
+            }
+            else
+            {
+                l_Animator.Stop();
+            }
+        }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,10 +71,6 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        /*Renderer rend = GetComponent<Renderer>();
-        rend.material.shader = Shader.Find("Specular");
-        rend.material.SetColor("_Color", UnityEngine.Color.blue);*/
-
         if (this.chessman != null && chequerPos.HasValue)
         {
             if (chessboard.TryMoveInto(chequerPos.Value))
@@ -115,20 +131,26 @@ public class CubeRS : MonoBehaviour
         lightOfCube.range = 0;
 
         l_Animator.Stop();
+
+        if(isKingCheckedHere)
+            l_Animator.Play("KingInDanger");
     }
 
     public void SetRedColor()
     {
-        l_Animator.Play("SwitchRedLightOn");
+        if(!isKingCheckedHere)
+            l_Animator.Play("SwitchRedLightOn");
     }
 
     public void SetGreenColor()
     {
-        l_Animator.Play("SwitchGreenLightOn");
+        if (!isKingCheckedHere)
+            l_Animator.Play("SwitchGreenLightOn");
     }
 
     public void SetBlueColor()
     {
+        l_Animator.Stop();
         l_Animator.Play("SwitchBlueLightOn");
     }
 }

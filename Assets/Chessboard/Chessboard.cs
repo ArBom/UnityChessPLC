@@ -101,6 +101,9 @@ public class Chessboard : MonoBehaviour
 
         //Set the actual turn
         actualTurn = Assets.Color.White;
+
+        //delegates       
+
     }
 
     // Start is called before the first frame update
@@ -115,12 +118,20 @@ public class Chessboard : MonoBehaviour
 
     }
 
-    private (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) CheckChecked(CubeRS[,] chequers)
+    private (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) CheckChecked(CubeRS[,] chequers = null)
     {
         HashSet<ChequerPos> ByWhiteHS = new HashSet<ChequerPos>();
         HashSet<ChequerPos> ByBlackHS = new HashSet<ChequerPos>();
 
-        foreach (var ChM in chequers)
+        CubeRS[,] chequersTemp;
+
+        if (chequers != null)
+            chequersTemp = chequers;
+        else
+            chequersTemp = this.chequers;
+
+
+        foreach (var ChM in chequersTemp)
         {
             if (ChM.chessman != null)
             {
@@ -229,28 +240,68 @@ public class Chessboard : MonoBehaviour
         else if(Moves.confuting.Exists(o =>
                                        o.column == newChequerPos.column &&
                                        o.row == newChequerPos.row))
-        {
-            ConfuteAndMove(newChequerPos);
-            return true;
-        }
+             {
+                ConfuteAndMove(newChequerPos);
+                return true;
+             }
 
         return false;
     }
 
     private void MoveTo(ChequerPos newChequerPos)
     {
-        //chequers[newChequerPos.column, newChequerPos.row].chessman = chequers[Moves.marked.column, Moves.marked.row].chessman;
         chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
-        //chequers[Moves.marked.column, Moves.marked.row].chessman = null;
-        ChangeTurn();
 
         UnmarkAndSwitchoffLights();
+
+        Checked = CheckChecked();
+        CheckIsKingsSave();
+        ChangeTurn();
     }
 
     private void ConfuteAndMove(ChequerPos newChequerPos)
     {
         chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
         chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
+    }
+
+    private List<Assets.Color> CheckIsKingsSave(/*CubeRS[,] chequersIn = null*/) //TODO dopisać dla alternatywnych szachownic
+    {
+        //CubeRS[,] chequersT = chequersIn == null ? this.chequers : chequersIn;
+
+        ChequerPos positionOfBlackKing = new ChequerPos();
+        ChequerPos positionOfWhiteKing = new ChequerPos();
+
+        foreach (var CRS in chequers)
+            CRS.isKingCheckedHere = false;
+
+        foreach (var CRS in chequers)
+            if (CRS.chessman != null)
+                if (CRS.chessman.chessmanType == ChessmanType.KING)
+                    if (CRS.chessman.color == Assets.Color.White)
+                        positionOfWhiteKing = CRS.chessman.position.Value;
+                    else
+                        positionOfBlackKing = CRS.chessman.position.Value;
+
+        List<Assets.Color> ToReturn = new List<Assets.Color>(); 
+
+        if (Checked.Byblack.Any(c =>
+                                c.column == positionOfWhiteKing.column &&
+                                c.row == positionOfWhiteKing.row))
+        {
+            chequers[positionOfWhiteKing.column, positionOfWhiteKing.row].isKingCheckedHere = true;
+            ToReturn.Add(Assets.Color.White);
+        }
+
+        if (Checked.ByWhite.Any(c =>
+                                c.column == positionOfBlackKing.column &&
+                                c.row == positionOfBlackKing.row))
+        {
+            chequers[positionOfBlackKing.column, positionOfBlackKing.row].isKingCheckedHere = true;
+            ToReturn.Add(Assets.Color.Black);
+        }
+
+        return ToReturn;
     }
 
     private void ChangeTurn()
