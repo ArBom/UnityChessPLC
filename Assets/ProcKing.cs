@@ -51,10 +51,11 @@ public class ProcKing : Chessman
         MakeData2();
     }
 
-    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves()
+    public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves()
     {
         List<ChequerPos> possible = new List<ChequerPos>();
         List<ChequerPos> confuting = new List<ChequerPos>();
+        List<ChequerPos> protect = new List<ChequerPos>();
 
         ChequerPos tempChequerPos = new ChequerPos();
         CanMoveInto canMoveInto;
@@ -67,6 +68,11 @@ public class ProcKing : Chessman
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)position.Value.column };
         canMoveInto = chessboard.Check(color, tempChequerPos);
 
+        if (canMoveInto == CanMoveInto.EmptyButChecked)
+        {
+            print("Krol otrzymal info o szachowanym polu");
+        }
+
         if (canMoveInto == CanMoveInto.Empty)
         {
             possible.Add(tempChequerPos);
@@ -74,11 +80,21 @@ public class ProcKing : Chessman
         else if (canMoveInto == CanMoveInto.TakenO)
         {
             confuting.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
         }
 
         //NE
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column + 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
+
+        if (canMoveInto == CanMoveInto.EmptyButChecked)
+        {
+            print("Krol otrzymal info o szachowanym polu");
+        }
+
         if (canMoveInto == CanMoveInto.Empty)
         {
             possible.Add(tempChequerPos);
@@ -86,6 +102,10 @@ public class ProcKing : Chessman
         else if (canMoveInto == CanMoveInto.TakenO)
         {
             confuting.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
         }
 
         //E
@@ -104,6 +124,10 @@ public class ProcKing : Chessman
         {
             confuting.Add(tempChequerPos);
         }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
+        }
 
         //SE
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column + 1) };
@@ -115,6 +139,10 @@ public class ProcKing : Chessman
         else if (canMoveInto == CanMoveInto.TakenO)
         {
             confuting.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
         }
 
         //S
@@ -128,6 +156,10 @@ public class ProcKing : Chessman
         {
             confuting.Add(tempChequerPos);
         }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
+        }
 
         //SW
         tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column - 1) };
@@ -139,6 +171,10 @@ public class ProcKing : Chessman
         else if (canMoveInto == CanMoveInto.TakenO)
         {
             confuting.Add(tempChequerPos);
+        }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
         }
 
         //W
@@ -156,6 +192,10 @@ public class ProcKing : Chessman
         {
             confuting.Add(tempChequerPos);
         }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
+        }
 
         //TODO dopisać roszady
         //NW
@@ -169,9 +209,13 @@ public class ProcKing : Chessman
         {
             confuting.Add(tempChequerPos);
         }
+        else if (canMoveInto == CanMoveInto.TakenY)
+        {
+            protect.Add(tempChequerPos);
+        }
 
         ChequerPos marked = this.position.Value;
 
-        return (marked, possible, confuting);
+        return (marked, possible, confuting, protect);
     }
 }

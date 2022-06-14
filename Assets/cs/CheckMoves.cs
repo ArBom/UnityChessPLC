@@ -107,7 +107,7 @@ namespace Assets.cs
             return true;
         }
 
-        public static CanMoveInto CheckMove(Assets.Color? YourColor, ChequerPos Pos, List<ChequerPos> ByWhite = null, List<ChequerPos> ByBlack = null, CubeRS[,] TableOfChequers = null)
+        public static CanMoveInto CheckMove(Assets.Color? YourColor, ChequerPos Pos, (List<ChequerPos> ByWhite, List<ChequerPos> ByBlack) check , CubeRS[,] TableOfChequers = null)
         {
             CubeRS[,] LocalChequers;
 
@@ -128,21 +128,21 @@ namespace Assets.cs
 
             if (LocalChequers[Pos.column, Pos.row].chessman == null) //Chequer is empty
             {
-                if (!YourColor.HasValue || ByBlack == null || ByWhite == null) //Your color isnt inmportant
+                if (!YourColor.HasValue || check.ByBlack == null || check.ByWhite == null) //Your color isnt inmportant
                     return CanMoveInto.Empty;
-                else if (YourColor == Assets.Color.White && ByBlack != null) //you are white && you need info about chequed
+                else if (YourColor == Assets.Color.White && check.ByBlack != null) //you are white && you need info about chequed
                 {
-                    if (ByBlack.Exists(cp =>
-                                       cp.column == Pos.column &&
-                                       cp.row == Pos.row))
+                    if (check.ByBlack.Exists(cp =>
+                                             cp.column == Pos.column &&
+                                             cp.row == Pos.row))
                         return CanMoveInto.EmptyButChecked; //You are white && you want to move checked chequer
                     else return CanMoveInto.Empty; //You are white && you want to move to the save chequer
                 }
-                else if (YourColor == Assets.Color.Black && ByWhite != null) //you are black && you need info about chequed
+                else if (YourColor == Assets.Color.Black && check.ByWhite != null) //you are black && you need info about chequed
                 {
-                    if (ByWhite.Exists(cp =>
-                                        cp.column == Pos.column &&
-                                        cp.row == Pos.row))
+                    if (check.ByWhite.Exists(cp =>
+                                             cp.column == Pos.column &&
+                                             cp.row == Pos.row))
                         return CanMoveInto.EmptyButChecked; //You are black && you want to move checked chequer
                     else return CanMoveInto.Empty; //You are black && you want to move to the save chequer
                 }
@@ -151,13 +151,28 @@ namespace Assets.cs
 
             if (YourColor.HasValue)
             {
-                if (LocalChequers[Pos.column, Pos.row].chessman.color == YourColor)
+                if (LocalChequers[Pos.column, Pos.row].chessman.color == YourColor.Value)
                 {
                     return CanMoveInto.TakenY;
                 }
 
-                if (LocalChequers[Pos.column, Pos.row].chessman.color != YourColor)
+                if (LocalChequers[Pos.column, Pos.row].chessman.color != YourColor.Value)
                 {
+                    if (YourColor.Value == Assets.Color.White)
+                    {
+                        if (check.ByBlack.Exists(cp =>
+                                                 cp.column == Pos.column &&
+                                                 cp.row == Pos.row))
+                            return CanMoveInto.TakenOButChecked;
+                    }
+                    else
+                    {
+                        if (check.ByWhite.Exists(cp =>
+                                                 cp.column == Pos.column &&
+                                                 cp.row == Pos.row))
+                            return CanMoveInto.TakenOButChecked;
+                    }
+
                     return CanMoveInto.TakenO;
                 }
             }

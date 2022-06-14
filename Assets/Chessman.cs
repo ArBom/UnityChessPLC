@@ -300,6 +300,6 @@ namespace Assets
             Destroy(this.gameObject, 0.5f);
         }
 
-        public abstract (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves();
+        public abstract (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves();
     }
 }

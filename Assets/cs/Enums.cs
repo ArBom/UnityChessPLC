@@ -25,11 +25,12 @@ namespace Assets
 
     public enum CanMoveInto
     {
-        NoExist = 0,
-        Empty = 1,
-        TakenY = 2,
-        TakenO = 3,
-        EmptyButChecked = 4,
+        NoExist,
+        Empty,
+        EmptyButChecked,
+        TakenY,
+        TakenO,
+        TakenOButChecked,
         WRONGARG
     }
 

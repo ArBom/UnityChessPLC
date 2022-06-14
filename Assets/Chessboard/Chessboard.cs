@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Sharp7;
+using Assets.cs;
 
 /*
  * row            N
@@ -38,8 +39,12 @@ public class Chessboard : MonoBehaviour
     public delegate void TurnChange(Assets.Color newColor);
     public event TurnChange turnChange;
 
-    public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting) Moves;
-    public (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) Checked;
+    public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves;
+    public (List<ChequerPos> ByWhite, List<ChequerPos> ByBlack) Checked
+    {
+        get;
+        protected set;
+    }
 
     private void Awake()
     {
@@ -62,8 +67,7 @@ public class Chessboard : MonoBehaviour
         Moves.confuting = new List<ChequerPos>();
 
         //list act chequer
-        Checked.Byblack = new List<ChequerPos>();
-        Checked.ByWhite = new List<ChequerPos>();
+        Checked = (new List<ChequerPos>(), new List<ChequerPos>());
 
         //chessmans
         //white ones
@@ -135,16 +139,18 @@ public class Chessboard : MonoBehaviour
         {
             if (ChM.chessman != null)
             {
-                List<ChequerPos> confuting = ChM.chessman.Moves().confuting;
+                List<ChequerPos> confutingAndProtected = ChM.chessman.Moves().possible;
+                confutingAndProtected.AddRange(ChM.chessman.Moves().confuting);
+                confutingAndProtected.AddRange(ChM.chessman.Moves().protect);
 
                 if(ChM.chessman.color == Assets.Color.White)
                 {
-                    foreach (var ChP in confuting)
+                    foreach (var ChP in confutingAndProtected)
                         ByWhiteHS.Add(ChP);
                 }
                 else
                 {
-                    foreach (var ChP in confuting)
+                    foreach (var ChP in confutingAndProtected)
                         ByBlackHS.Add(ChP);
                 }
             }      
@@ -285,7 +291,7 @@ public class Chessboard : MonoBehaviour
 
         List<Assets.Color> ToReturn = new List<Assets.Color>(); 
 
-        if (Checked.Byblack.Any(c =>
+        if (Checked.ByBlack.Any(c =>
                                 c.column == positionOfWhiteKing.column &&
                                 c.row == positionOfWhiteKing.row))
         {
@@ -316,7 +322,11 @@ public class Chessboard : MonoBehaviour
 
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos, List<ChequerPos> ByWhite = null, List<ChequerPos> ByBlack = null, CubeRS[,] TableOfChequers = null)
     {
-        CubeRS[,] LocalChequers;
+        CanMoveInto Toreturn = CheckMoves.CheckMove(YourColor, Pos, Checked, this.chequers);
+
+        return Toreturn;
+
+        /*CubeRS[,] LocalChequers;
 
         if (TableOfChequers != null)
         {
@@ -369,6 +379,6 @@ public class Chessboard : MonoBehaviour
             }
         }
 
-        return CanMoveInto.NoExist;
+        return CanMoveInto.NoExist;*/
     }
 }
