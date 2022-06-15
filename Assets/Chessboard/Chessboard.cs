@@ -139,9 +139,11 @@ public class Chessboard : MonoBehaviour
         {
             if (ChM.chessman != null)
             {
-                List<ChequerPos> confutingAndProtected = ChM.chessman.Moves().possible;
+                List<ChequerPos> confutingAndProtected = ChM.chessman.Moves().protect;
                 confutingAndProtected.AddRange(ChM.chessman.Moves().confuting);
-                confutingAndProtected.AddRange(ChM.chessman.Moves().protect);
+
+                if(ChM.chessman.chessmanType != ChessmanType.PAWN)
+                    confutingAndProtected.AddRange(ChM.chessman.Moves().possible);
 
                 if(ChM.chessman.color == Assets.Color.White)
                 {
