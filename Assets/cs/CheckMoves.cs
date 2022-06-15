@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.cs;
+using UnityEngine;
 
 namespace Assets.cs
 {
@@ -11,10 +12,11 @@ namespace Assets.cs
     {
         public static Chessboard chessboard;
 
-        public static bool checkCastlingPos(Assets.Color YourColor, bool longCastling, List<ChequerPos> check, CubeRS[,] TableOfChequers = null)
+        public static bool checkCastlingPos(Assets.Color YourColor, bool longCastling, (List<ChequerPos> ByWhite, List<ChequerPos> ByBlack) Checked, CubeRS[,] TableOfChequers = null)
         {
-            int Row = YourColor == Assets.Color.White ? 1 : 6;
+            int Row = YourColor == Assets.Color.White ? 0 : 7;
             int RookCol = longCastling ? 0 : 7;
+            List<ChequerPos> check = YourColor == Color.White ? Checked.ByBlack : Checked.ByWhite;
 
             CubeRS[,] LocalChequers;
 

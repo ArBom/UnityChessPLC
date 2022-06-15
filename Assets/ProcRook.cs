@@ -72,7 +72,7 @@ public class ProcRook : Chessman
                 protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
             }
         }
-        while (canMoveInto == CanMoveInto.Empty);
+        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
         rowToCheck = position.Value.row;
 
         do //S

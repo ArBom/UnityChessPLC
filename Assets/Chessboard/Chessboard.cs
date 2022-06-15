@@ -96,8 +96,8 @@ public class Chessboard : MonoBehaviour
         CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 0, row = 7 }, Assets.Color.Black);
         CreateChessman(ChessmanType.ROOK, new ChequerPos { column = 7, row = 7 }, Assets.Color.Black);
 
-        CreateChessman(ChessmanType.KING, new ChequerPos { column = 3, row = 7 }, Assets.Color.Black);
-        CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.KING, new ChequerPos { column = 4, row = 7 }, Assets.Color.Black);
+        CreateChessman(ChessmanType.QUEEN, new ChequerPos { column = 3, row = 7 }, Assets.Color.Black);
 
         for (short bp = 0; bp < 8; ++bp)
             CreateChessman(ChessmanType.PAWN, new ChequerPos { column = bp, row = 6 }, Assets.Color.Black);
@@ -242,6 +242,12 @@ public class Chessboard : MonoBehaviour
                                  o.column == newChequerPos.column &&
                                  o.row == newChequerPos.row))                                
         {
+            if (chequers[Moves.marked.column, Moves.marked.row].chessman.chessmanType == ChessmanType.KING && Math.Abs(Moves.marked.column - newChequerPos.column) == 2)
+            {
+                Castling(Moves.marked, newChequerPos);
+                return true;
+            }
+
             MoveTo(newChequerPos);
             return true;
         }
@@ -256,6 +262,22 @@ public class Chessboard : MonoBehaviour
         return false;
     }
 
+    private void Castling (ChequerPos kingStart, ChequerPos kingEnd)
+    {
+        if (kingStart.row != kingEnd.row)
+            return;
+
+        //Move of rook
+        short row = kingStart.row;
+        int rookSC = kingEnd.column == 2 ? 0 : 7;
+        int rookEC = kingEnd.column == 2 ? 3 : 5;
+
+        chequers[rookSC, row].chessman.SetValues(new ChequerPos() {column = (short)rookEC, row = row }, null);
+
+        //Move of the king
+        MoveTo(kingEnd);
+    }
+
     private void MoveTo(ChequerPos newChequerPos)
     {
         chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
@@ -264,6 +286,7 @@ public class Chessboard : MonoBehaviour
 
         Checked = CheckChecked();
         CheckIsKingsSave();
+
         ChangeTurn();
     }
 
@@ -326,61 +349,6 @@ public class Chessboard : MonoBehaviour
     {
         CanMoveInto Toreturn = CheckMoves.CheckMove(YourColor, Pos, Checked, this.chequers);
 
-        return Toreturn;
-
-        /*CubeRS[,] LocalChequers;
-
-        if (TableOfChequers != null)
-        {
-            LocalChequers = TableOfChequers;
-        }
-        else
-        {
-            LocalChequers = chequers;
-        }
-
-
-        if (Pos.column > 7 || Pos.row > 7 || Pos.column < 0 || Pos.row < 0)
-        {
-            return CanMoveInto.NoExist;
-        }
-
-        if (LocalChequers[Pos.column, Pos.row].chessman == null) //Chequer is empty
-        {
-            if (!YourColor.HasValue || ByBlack == null || ByWhite == null) //Your color isnt inmportant
-                return CanMoveInto.Empty;
-            else if (YourColor == Assets.Color.White && ByBlack != null) //you are white && you need info about chequed
-            {
-                if (ByBlack.Exists(cp =>
-                                   cp.column == Pos.column &&
-                                   cp.row == Pos.row))
-                    return CanMoveInto.EmptyButChecked; //You are white && you want to move checked chequer
-                else return CanMoveInto.Empty; //You are white && you want to move to the save chequer
-            }
-            else if (YourColor == Assets.Color.Black && ByWhite != null) //you are black && you need info about chequed
-            {
-                if (ByWhite.Exists(cp =>
-                                    cp.column == Pos.column &&
-                                    cp.row == Pos.row))
-                    return CanMoveInto.EmptyButChecked; //You are black && you want to move checked chequer
-                else return CanMoveInto.Empty; //You are black && you want to move to the save chequer
-            }
-            else return CanMoveInto.Empty; //You are black or white && you Dont need info about chequed
-        }
-
-        if (YourColor.HasValue)
-        {
-            if (LocalChequers[Pos.column, Pos.row].chessman.color == YourColor)
-            {
-                return CanMoveInto.TakenY;
-            }
-
-            if (LocalChequers[Pos.column, Pos.row].chessman.color != YourColor)
-            {
-                return CanMoveInto.TakenO;
-            }
-        }
-
-        return CanMoveInto.NoExist;*/
+        return Toreturn;       
     }
 }

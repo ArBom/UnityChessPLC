@@ -5,7 +5,7 @@ using Assets;
 
 public class ProcUI : MonoBehaviour
 {
-    private Animation animation;
+    new private Animation animation;
     public Chessboard chessboard;
 
     private void Awake()
