@@ -114,23 +114,9 @@ namespace Assets
         {
             if (newPos.row < 8 && newPos.column < 8 && newPos.row >=0 && newPos.column >= 0)
             {
-                if (this.position.HasValue)
-                {
-                    chessboard.chequers[newPos.column, newPos.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
-                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
-                    oldPosition = position.Value;
-                    position = newPos;
-
-                    ratioOfMove = 0;
-                }
-                else
-                {
-                    position = newPos;
-                    this.transform.localPosition = new Vector3(position.Value.column, 0, position.Value.row);
-                }
-
                 if (newColor.HasValue)
                 {
+                    this.gameObject.SetActive(true);
                     color = newColor.Value;
 
                     if (color == Color.Black)
@@ -146,6 +132,21 @@ namespace Assets
                 }
                 else
                     nieDrgnal = false;
+
+                if (this.position.HasValue)
+                {
+                    chessboard.chequers[newPos.column, newPos.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
+                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
+                    oldPosition = position.Value;
+                    position = newPos;
+
+                    ratioOfMove = 0;
+                }
+                else
+                {
+                    position = newPos;
+                    this.transform.localPosition = new Vector3(position.Value.column, 0, position.Value.row);
+                }
 
                 return true;
             }

@@ -8,7 +8,7 @@ public class ProcCamera : MonoBehaviour
 {
     //private float cameraRotation;
     public Chessboard chessboard;
-    private const float speed = 20f;
+    private const float speed = 40f;
     private float angleCamera;
     private float targetCamera =360;
 
