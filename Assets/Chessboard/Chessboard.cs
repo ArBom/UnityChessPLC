@@ -30,6 +30,8 @@ public class Chessboard : MonoBehaviour
     public GameObject ChBishop;
     public GameObject ChPawn;
 
+    public ProcPromotionWin procPromotionWin;
+
     public Assets.Color actualTurn
     {
         get;
@@ -38,6 +40,8 @@ public class Chessboard : MonoBehaviour
 
     public delegate void TurnChange(Assets.Color newColor);
     public event TurnChange turnChange;
+
+    ChequerPos ChequerPosAfterPromo;
 
     public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves;
     public (List<ChequerPos> ByWhite, List<ChequerPos> ByBlack) Checked
@@ -107,7 +111,7 @@ public class Chessboard : MonoBehaviour
         actualTurn = Assets.Color.White;
 
         //delegates       
-
+        procPromotionWin.choose += Promo;
     }
 
     // Start is called before the first frame update
@@ -238,6 +242,23 @@ public class Chessboard : MonoBehaviour
 
     public bool TryMoveInto(ChequerPos newChequerPos)
     {
+        if(chequers[Moves.marked.column, Moves.marked.row].chessman.chessmanType == ChessmanType.PAWN)
+        {
+            if(newChequerPos.row == 0 || newChequerPos.row == 7)
+            {
+                List<ChequerPos> evryPos = new List<ChequerPos>(Moves.possible);
+                evryPos.AddRange(Moves.confuting);
+
+                if (evryPos.Exists(o =>
+                          o.column == newChequerPos.column &&
+                          o.row == newChequerPos.row))
+                {
+                    PromoAndMoveAgain(newChequerPos);
+                    return false;
+                }
+            }
+        }
+
         if(Moves.possible.Exists(o => 
                                  o.column == newChequerPos.column &&
                                  o.row == newChequerPos.row))                                
@@ -259,6 +280,8 @@ public class Chessboard : MonoBehaviour
                 return true;
              }
 
+        UnmarkAndSwitchoffLights();
+        procPromotionWin.HideYourself();
         return false;
     }
 
@@ -288,6 +311,24 @@ public class Chessboard : MonoBehaviour
         CheckIsKingsSave();
 
         ChangeTurn();
+    }
+
+    private void PromoAndMoveAgain(ChequerPos newChequerPos)
+    {
+        ChequerPosAfterPromo = newChequerPos;
+
+        Assets.Color color = chequers[Moves.marked.column, Moves.marked.row].chessman.color;
+        procPromotionWin.ShowYourself(color);
+
+    }
+
+    private void Promo(ChessmanType chessmanType)
+    {
+        Destroy(chequers[Moves.marked.column, Moves.marked.row].chessman.gameObject);
+        chequers[Moves.marked.column, Moves.marked.row].chessman = null;
+        CreateChessman(chessmanType, new ChequerPos { column = Moves.marked.column, row = Moves.marked.row }, actualTurn);
+        TryMoveInto(ChequerPosAfterPromo);
+        ChequerPosAfterPromo = new ChequerPos();
     }
 
     private void ConfuteAndMove(ChequerPos newChequerPos)
@@ -345,6 +386,7 @@ public class Chessboard : MonoBehaviour
         turnChange?.Invoke(actualTurn);
     }
 
+    //TODO przemyslec ponizsze
     public CanMoveInto Check(Assets.Color? YourColor, ChequerPos Pos, List<ChequerPos> ByWhite = null, List<ChequerPos> ByBlack = null, CubeRS[,] TableOfChequers = null)
     {
         CanMoveInto Toreturn = CheckMoves.CheckMove(YourColor, Pos, Checked, this.chequers);

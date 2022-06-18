@@ -15,8 +15,8 @@ namespace Assets
         public Material PureMaterial;
         public Material MuddyMaterial;
 
-        public delegate void ConfutedHandled(ChequerPos position);
-        public event ConfutedHandled ConfutedHandler;
+        public delegate void Handled(ChequerPos position);
+        public event Handled ConfutedHandler;
 
         private Renderer rend;
 

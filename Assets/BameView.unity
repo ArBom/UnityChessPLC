@@ -1405,6 +1405,7 @@ MonoBehaviour:
   ChQueen: {fileID: 588940355}
   ChBishop: {fileID: 1668967640}
   ChPawn: {fileID: 969177285}
+  procPromotionWin: {fileID: 917133765}
 --- !u!4 &1042216703
 Transform:
   m_ObjectHideFlags: 0
