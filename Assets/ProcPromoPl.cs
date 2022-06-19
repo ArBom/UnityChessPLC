@@ -22,6 +22,7 @@ public class ProcPromoPl : MonoBehaviour
         animation = light.GetComponent<Animation>();
 
         promoChessman = Instantiate(chessman);
+
         Vector3 chessLocalPosition = new Vector3();
 
         switch (thisChessmanType)
@@ -48,7 +49,7 @@ public class ProcPromoPl : MonoBehaviour
         promoChessman.transform.SetParent(trParent, false);
         promoChessman.transform.localScale = new Vector3(.25f, 1f, .25f);
         var ChessmanComp = promoChessman.GetComponent<Chessman>();
-        
+
         promoChessman.GetComponent<Renderer>().material = ChessmanComp.PureMaterial;
         promoChessman.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sharp7;
 using Assets.cs;
+using System.Threading.Tasks;
 
 /*
  * row            N
@@ -32,6 +33,11 @@ public class Chessboard : MonoBehaviour
 
     public ProcPromotionWin procPromotionWin;
 
+    public AudioClip confutingAC;
+    public AudioClip movingAC;
+    public AudioClip kingindangerAC;
+    private AudioClip toPlay;
+
     public Assets.Color actualTurn
     {
         get;
@@ -41,7 +47,8 @@ public class Chessboard : MonoBehaviour
     public delegate void TurnChange(Assets.Color newColor);
     public event TurnChange turnChange;
 
-    ChequerPos ChequerPosAfterPromo;
+    private ChequerPos ChequerPosAfterPromo;
+    private AudioSource audioSource;
 
     public (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves;
     public (List<ChequerPos> ByWhite, List<ChequerPos> ByBlack) Checked
@@ -106,12 +113,15 @@ public class Chessboard : MonoBehaviour
         for (short bp = 0; bp < 8; ++bp)
             CreateChessman(ChessmanType.PAWN, new ChequerPos { column = bp, row = 6 }, Assets.Color.Black);
 
-
         //Set the actual turn
         actualTurn = Assets.Color.White;
 
         //delegates       
         procPromotionWin.choose += Promo;
+        turnChange += PlayAudioClip;
+
+        //audio Source
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -269,6 +279,7 @@ public class Chessboard : MonoBehaviour
                 return true;
             }
 
+            toPlay = movingAC;
             MoveTo(newChequerPos);
             return true;
         }
@@ -276,6 +287,7 @@ public class Chessboard : MonoBehaviour
                                        o.column == newChequerPos.column &&
                                        o.row == newChequerPos.row))
              {
+                toPlay = confutingAC;
                 ConfuteAndMove(newChequerPos);
                 return true;
              }
@@ -308,7 +320,10 @@ public class Chessboard : MonoBehaviour
         UnmarkAndSwitchoffLights();
 
         Checked = CheckChecked();
-        CheckIsKingsSave();
+        if (CheckIsKingsSave().Count != 0)
+        {
+            toPlay = kingindangerAC;
+        }
 
         ChangeTurn();
     }
@@ -384,6 +399,19 @@ public class Chessboard : MonoBehaviour
             actualTurn = Assets.Color.White;
 
         turnChange?.Invoke(actualTurn);
+    }
+
+    private void PlayAudioClip(Assets.Color c)
+    {
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        if (toPlay == movingAC)
+            audioSource.volume = 0.3f;
+        else
+            audioSource.volume = 1f;
+
+        audioSource.PlayOneShot(toPlay);
     }
 
     //TODO przemyslec ponizsze
