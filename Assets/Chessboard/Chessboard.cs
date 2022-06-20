@@ -62,13 +62,16 @@ public class Chessboard : MonoBehaviour
         //chequer table
         chequers = new CubeRS[8,8]; //[column,row]
 
-        for (ushort c=0; c!=8; ++c)
+        for (short c=-1; c!=9; ++c)
         {
-            for (ushort r=0; r!=8; ++r)
+            for (short r=-1; r!=9; ++r)
             {
                 var p = Instantiate(CubeR, new Vector3(c * 1.0f, -.06f, r * 1.0f), Quaternion.identity);
+                p.transform.parent = this.transform;
                 p.GetComponent<CubeRS>().SetChequerPos(r, c);
-                chequers[c, r] = p.GetComponent<CubeRS>();
+
+                if(r > -1 && c >-1 && r < 8 && c < 8)
+                    chequers[c, r] = p.GetComponent<CubeRS>();
             }
             CubeRS.chessboard = this;
         }

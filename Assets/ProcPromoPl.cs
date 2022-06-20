@@ -28,19 +28,19 @@ public class ProcPromoPl : MonoBehaviour
         switch (thisChessmanType)
         {
             case ChessmanType.QUEEN:
-                chessLocalPosition = new Vector3(-0.3f, -0.55f, -1.65f);
+                chessLocalPosition = new Vector3(-0.3f, -0.66f, -1.65f);
                 break;
 
             case ChessmanType.KNIGHT:
-                chessLocalPosition = new Vector3(-0.1f, -0.55f, -1.65f);
+                chessLocalPosition = new Vector3(-0.1f, -0.66f, -1.65f);
                 break;
 
             case ChessmanType.ROOK:
-                chessLocalPosition = new Vector3(0.1f, -0.55f, -1.65f);
+                chessLocalPosition = new Vector3(0.1f, -0.66f, -1.65f);
                 break;
 
             case ChessmanType.BISHOP:
-                chessLocalPosition = new Vector3(0.3f, -0.55f, -1.65f);
+                chessLocalPosition = new Vector3(0.3f, -0.66f, -1.65f);
                 break;
         }
 

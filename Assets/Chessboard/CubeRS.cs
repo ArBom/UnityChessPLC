@@ -1,7 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets;
+using TMPro;
 
 public class CubeRS : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class CubeRS : MonoBehaviour
 
     public Material PureMaterial;
     public Material MuddyMaterial;
+    public TextMeshPro TMP;
+
     private Renderer rend;
     private UnityEngine.Color ColorofSelection = UnityEngine.Color.white;
     protected UnityEngine.Color StartColor;
@@ -60,30 +63,42 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+            return;
+
         ColorofSelection = rend.material.GetColor("_Color");
         rend.material.SetColor("_Color", UnityEngine.Color.magenta);
     }
 
     private void OnMouseExit()
     {
+        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+            return;
+
         rend.material.SetColor("_Color", ColorofSelection);
     }
 
     private void OnMouseUpAsButton()
     {
-        if (this.chessman != null && chequerPos.HasValue)
+        if (!chequerPos.HasValue)
+            return;
+
+        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+            return;
+
+        if (this.chessman != null)
         {
             if (chessboard.TryMoveInto(chequerPos.Value))
                 return;
         }
 
-        if (this.chessman != null && chequerPos.HasValue && chessboard.actualTurn == this.chessman.color)
+        if (this.chessman != null && chessboard.actualTurn == this.chessman.color)
         {
             chessboard.UnmarkAndSwitchoffLights();
             chessboard.Moves = chessman.Moves();
             chessboard.GiveColors();
         }
-        else if (this.chessman == null && chequerPos.HasValue)
+        else if (this.chessman == null)
         {
             chessboard.TryMoveInto(chequerPos.Value);
         }
@@ -95,23 +110,71 @@ public class CubeRS : MonoBehaviour
 
     }
 
-    public bool SetChequerPos(ushort Row, ushort Column)
+    public bool SetChequerPos(short Row, short Column)
     {
-        if (!chequerPos.HasValue && Row < 8 && Column < 8)
+        ChequerPos temp = new ChequerPos
         {
-            ChequerPos temp = new ChequerPos
-            {
-                column = (short)Column,
-                row = (short)Row
-            };
-            chequerPos = temp;
+            column = Column,
+            row = Row
+        };
 
-            this.Color = (this.chequerPos.Value.column + this.chequerPos.Value.row) % 2 == 0 ? Assets.Color.Black : Assets.Color.White;
+        if (chequerPos.HasValue)
+            return false;
+
+        chequerPos = temp;
+        this.Color = (this.chequerPos.Value.column + this.chequerPos.Value.row) % 2 == 0 ? Assets.Color.White : Assets.Color.Black;
+
+        if (Row > -1 && Column > -1 && Row < 8 && Column < 8)
+        {
             char name1 = (char)(this.chequerPos.Value.column + 65);
             string name2 = (this.chequerPos.Value.row + 1).ToString();
             NameOfThis = name1 + name2;
+            Destroy(TMP);
 
             return true;
+        }
+        else
+        {
+            float newZ = 1;
+            float newX = 1;
+
+            if (Row == -1)
+            {
+                newZ = 0.4f;
+                this.transform.Translate(new Vector3(0f, 0f, 0.3f));
+                TMP.text = ((char)(this.chequerPos.Value.column + 65)).ToString();
+            }
+
+            if (Row == 8)
+            {
+                newZ = 0.4f;
+                TMP.transform.Rotate(new Vector3(0, 0, 180f));
+                TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
+                this.transform.Translate(new Vector3(0f, 0f, -0.3f));
+                TMP.text = ((char)(this.chequerPos.Value.column + 65)).ToString();               
+            }
+
+            if (Column == -1)
+            {
+                newX = 0.4f;
+                this.transform.Translate(new Vector3(0.3f, 0f, 0));
+                TMP.text = (this.chequerPos.Value.row + 1).ToString();
+            }
+
+            if (Column == 8)
+            {
+                newX = 0.4f;
+                TMP.transform.Rotate(new Vector3(0, 0, 180f));
+                TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
+                this.transform.Translate(new Vector3(-0.3f, 0f, 0));
+                TMP.text = (this.chequerPos.Value.row + 1).ToString();
+            }
+
+            if (TMP.text == "0" || TMP.text == "9")
+                TMP.text = "■";
+
+            this.transform.localScale = new Vector3(newX, 0.075f, newZ);
+            Destroy(lightOfCube);
         }
 
         return false;
