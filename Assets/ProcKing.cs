@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets;
 using Assets.cs;
+using System;
 
 [RequireComponent(typeof(MeshFilter))]
 public class ProcKing : Chessman
@@ -202,6 +203,34 @@ public class ProcKing : Chessman
         {
             protect.Add(tempChequerPos);
         }
+
+        //king cannot touch another king below
+        ChequerPos OppoKingPos = new ChequerPos();
+
+        foreach(var Occ in chessboard.chequers)
+        {
+            if (Occ.chessman != null)
+            {
+                if (Occ.chessman.chessmanType == ChessmanType.KING && Occ.chessman.color != this.color)
+                {
+                    OppoKingPos = Occ.chessman.position.Value;
+                    break;
+                }
+            }
+        }
+
+        for (int i = possible.Count - 1; i >= 0; i--)
+        {
+            if (Math.Abs(possible[i].column - OppoKingPos.column) <= 1 && Math.Abs(possible[i].row - OppoKingPos.row) <= 1)
+                possible.RemoveAt(i);
+        }
+
+        for (int j = confuting.Count - 1; j >= 0; j--)
+        {
+            if (Math.Abs(confuting[j].column - OppoKingPos.column) <= 1 && Math.Abs(confuting[j].row - OppoKingPos.row) <= 1)
+                confuting.RemoveAt(j);
+        }
+        //king cannot touch another king up
 
         ChequerPos marked = this.position.Value;
 
