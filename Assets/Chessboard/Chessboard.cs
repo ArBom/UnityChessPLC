@@ -14,7 +14,7 @@ using System.Threading.Tasks;
  * .              S
  * 4  █ █
  * 3 █ █
- * 2  █ █      (A1)=(chequers[0,0])=
+ * 2  █ █      (A2)=(chequers[0,1])=(ChequerPos2ushort->1)
  * 1 █ █
  *   ABCD. ←column
  */
@@ -37,6 +37,11 @@ public class Chessboard : MonoBehaviour
     public AudioClip movingAC;
     public AudioClip kingindangerAC;
     private AudioClip toPlay;
+
+    public uint[] s7ChType = new uint[64];
+    private uint s7LastClick;
+    private uint[] s7Moves = new uint[64];
+    private bool s7WhiteTour;
 
     public Assets.Color actualTurn
     {
@@ -355,17 +360,17 @@ public class Chessboard : MonoBehaviour
         chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
     }
 
-    private List<Assets.Color> CheckIsKingsSave(/*CubeRS[,] chequersIn = null*/) //TODO dopisać dla alternatywnych szachownic
+    private List<Assets.Color> CheckIsKingsSave(CubeRS[,] chequersIn = null)
     {
-        //CubeRS[,] chequersT = chequersIn == null ? this.chequers : chequersIn;
+        CubeRS[,] chequersT = chequersIn == null ? this.chequers : chequersIn;
 
         ChequerPos positionOfBlackKing = new ChequerPos();
         ChequerPos positionOfWhiteKing = new ChequerPos();
 
-        foreach (var CRS in chequers)
+        foreach (var CRS in chequersT)
             CRS.isKingCheckedHere = false;
 
-        foreach (var CRS in chequers)
+        foreach (var CRS in chequersT)
             if (CRS.chessman != null)
                 if (CRS.chessman.chessmanType == ChessmanType.KING)
                     if (CRS.chessman.color == Assets.Color.White)
@@ -379,7 +384,7 @@ public class Chessboard : MonoBehaviour
                                 c.column == positionOfWhiteKing.column &&
                                 c.row == positionOfWhiteKing.row))
         {
-            chequers[positionOfWhiteKing.column, positionOfWhiteKing.row].isKingCheckedHere = true;
+            chequersT[positionOfWhiteKing.column, positionOfWhiteKing.row].isKingCheckedHere = true;
             ToReturn.Add(Assets.Color.White);
         }
 
@@ -387,7 +392,7 @@ public class Chessboard : MonoBehaviour
                                 c.column == positionOfBlackKing.column &&
                                 c.row == positionOfBlackKing.row))
         {
-            chequers[positionOfBlackKing.column, positionOfBlackKing.row].isKingCheckedHere = true;
+            chequersT[positionOfBlackKing.column, positionOfBlackKing.row].isKingCheckedHere = true;
             ToReturn.Add(Assets.Color.Black);
         }
 
@@ -396,6 +401,10 @@ public class Chessboard : MonoBehaviour
 
     private void ChangeTurn()
     {
+        ////
+        s7ChTypeCalc();
+        ////
+
         if (actualTurn == Assets.Color.White)
             actualTurn = Assets.Color.Black;
         else
@@ -423,5 +432,16 @@ public class Chessboard : MonoBehaviour
         CanMoveInto Toreturn = CheckMoves.CheckMove(YourColor, Pos, Checked, this.chequers);
 
         return Toreturn;       
+    }
+
+    private void s7ChTypeCalc()
+    {
+        foreach(var c in chequers)
+        {
+            if (c.chessman != null)
+                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos.Value)] = c.chessman.s7ChType();
+            else
+                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos.Value)] = 0;
+        }
     }
 }

@@ -75,9 +75,9 @@ namespace Assets
             }
         }
 
-        public int s7ChType()
+        public uint s7ChType()
         {
-            return (int)chessmanType + (int)color;
+            return (uint)chessmanType + (uint)color;
         }
 
         protected void CreateMesh()
