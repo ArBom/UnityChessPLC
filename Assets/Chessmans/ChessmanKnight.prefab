@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7223502640312523065
+--- !u!1 &8178555056973610782
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7223502640312523062}
-  - component: {fileID: 7223502640312523063}
-  - component: {fileID: 7223502640312523061}
-  - component: {fileID: 7223502640312523064}
+  - component: {fileID: 8178555056973610770}
+  - component: {fileID: 8178555056973610771}
+  - component: {fileID: 8178555056973610768}
+  - component: {fileID: 8178555056973610769}
+  - component: {fileID: -1336331341426382186}
+  - component: {fileID: 5679522864578537640}
   m_Layer: 0
-  m_Name: ChessmanRook
+  m_Name: ChessmanKnight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7223502640312523062
+--- !u!4 &8178555056973610770
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7223502640312523065}
+  m_GameObject: {fileID: 8178555056973610782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
@@ -33,13 +35,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &7223502640312523063
+--- !u!23 &8178555056973610771
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7223502640312523065}
+  m_GameObject: {fileID: 8178555056973610782}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -74,25 +76,57 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &7223502640312523061
+--- !u!33 &8178555056973610768
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7223502640312523065}
+  m_GameObject: {fileID: 8178555056973610782}
   m_Mesh: {fileID: 0}
---- !u!114 &7223502640312523064
+--- !u!114 &8178555056973610769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7223502640312523065}
+  m_GameObject: {fileID: 8178555056973610782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e81b03b00ca24192849d3a58e40d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0794d79fbcaaf98488d811707e59f84f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chessboard: {fileID: 8662911408503803000, guid: b25bb598f0c306a438f094871349d741,
-    type: 3}
+  chessboard: {fileID: 0}
+  PureMaterial: {fileID: 2100000, guid: cd50383f6da566c49bcf656dec3f447d, type: 2}
+  MuddyMaterial: {fileID: 2100000, guid: 16e2b6ee43a02c54d9199ed6ebc51763, type: 2}
+--- !u!64 &-1336331341426382186
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8178555056973610782}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!111 &5679522864578537640
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8178555056973610782}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 9e1ae6850c4f46f4d92c224bab8daa1e, type: 2}
+  - {fileID: 7400000, guid: 9bea1fc9d32dc5c498a61fbb375b46b0, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

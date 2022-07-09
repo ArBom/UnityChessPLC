@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Assets
 {
+    // <ColorAndType>
     public enum Color
     {
         Black = 0,
         White = 64
-    };
+    }
 
     public enum ChessmanType
     {
@@ -22,6 +23,7 @@ namespace Assets
         QUEEN = 16,
         KING = 32,
     }
+    // </ColorAndType>
 
     public enum CanMoveInto
     {

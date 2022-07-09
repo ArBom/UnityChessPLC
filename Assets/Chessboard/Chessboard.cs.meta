@@ -3,7 +3,18 @@ guid: 73a92840c54a8564785ab08bc82c3832
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - CubeR: {instanceID: 0}
+  - ChKnight: {instanceID: 0}
+  - ChRook: {instanceID: 0}
+  - ChKing: {instanceID: 0}
+  - ChQueen: {instanceID: 0}
+  - ChBishop: {instanceID: 0}
+  - ChPawn: {instanceID: 0}
+  - procPromotionWin: {instanceID: 0}
+  - confutingAC: {instanceID: 0}
+  - movingAC: {instanceID: 0}
+  - kingindangerAC: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

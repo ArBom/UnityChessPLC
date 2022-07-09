@@ -90,6 +90,7 @@ namespace Assets
 
         void Start()
         {
+            chessboard = FindObjectOfType<Chessboard>();
             chman_Animator = this.GetComponent<Animation>();
         }
 

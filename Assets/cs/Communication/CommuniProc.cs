@@ -21,7 +21,7 @@ public class CommuniProc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        chessboard.turnChange += UpdateData;
+        //chessboard.turnChange += UpdateData;
     }
 
     void UpdateData(Assets.Color newColor)
@@ -38,10 +38,6 @@ public class CommuniProc : MonoBehaviour
             for (int a = 0; a != db1Buffer.Length; ++a)
             {
                 db1Buffer[a] = (byte)chessboard.s7ChType[a];
-                if(db1Buffer[a] != 0)
-                {
-                    print("pole:" + a + ", wartosc:" + db1Buffer[a]);
-                }
             }
 
             int writing = s7Client.DBWrite(1, START_INDEX, db1Buffer.Length, db1Buffer);

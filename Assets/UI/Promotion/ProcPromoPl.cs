@@ -44,6 +44,7 @@ public class ProcPromoPl : MonoBehaviour
                 break;
         }
 
+        print(thisChessmanType);
 
         var trParent = this.transform.parent;
         promoChessman.transform.SetParent(trParent, false);

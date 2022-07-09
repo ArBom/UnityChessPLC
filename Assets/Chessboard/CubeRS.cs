@@ -130,6 +130,7 @@ public class CubeRS : MonoBehaviour
             string name2 = (this.chequerPos.Value.row + 1).ToString();
             NameOfThis = name1 + name2;
             Destroy(TMP);
+            //TMP.text = ChequerPosHelper.ChequerPos2ushort(this.chequerPos.Value).ToString();
 
             return true;
         }
@@ -142,7 +143,8 @@ public class CubeRS : MonoBehaviour
             {
                 newZ = 0.4f;
                 this.transform.Translate(new Vector3(0f, 0f, 0.3f));
-                TMP.text = ((char)(this.chequerPos.Value.column + 65)).ToString();
+                NameOfThis = ((char)(this.chequerPos.Value.column + 65)).ToString();
+                TMP.text = NameOfThis;
             }
 
             if (Row == 8)
@@ -151,14 +153,16 @@ public class CubeRS : MonoBehaviour
                 TMP.transform.Rotate(new Vector3(0, 0, 180f));
                 TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
                 this.transform.Translate(new Vector3(0f, 0f, -0.3f));
-                TMP.text = ((char)(this.chequerPos.Value.column + 65)).ToString();               
+                NameOfThis = ((char)(this.chequerPos.Value.column + 65)).ToString();
+                TMP.text = NameOfThis;              
             }
 
             if (Column == -1)
             {
                 newX = 0.4f;
                 this.transform.Translate(new Vector3(0.3f, 0f, 0));
-                TMP.text = (this.chequerPos.Value.row + 1).ToString();
+                NameOfThis = (this.chequerPos.Value.row + 1).ToString();
+                TMP.text = NameOfThis;
             }
 
             if (Column == 8)
@@ -167,7 +171,8 @@ public class CubeRS : MonoBehaviour
                 TMP.transform.Rotate(new Vector3(0, 0, 180f));
                 TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
                 this.transform.Translate(new Vector3(-0.3f, 0f, 0));
-                TMP.text = (this.chequerPos.Value.row + 1).ToString();
+                NameOfThis = (this.chequerPos.Value.row + 1).ToString();
+                TMP.text = NameOfThis;
             }
 
             if (TMP.text == "0" || TMP.text == "9")
