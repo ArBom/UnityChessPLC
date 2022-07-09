@@ -29,27 +29,10 @@ Squares of the chessboard with unique numbers | Fragment of Array of chessmans a
 
 For example:  
     white knight at B1 => 16#44 at DB1.Chessman[8]  
-    squere B1 ≀column #1, row #0 => 1*8+0=8≀ => 8th position at array  
+    squere B1 ≀column №1, row №0 => 1*8+0=8≀ => 8th position at array  
     44<sub>16</sub>=68<sub>10</sub>=4<sub>10</sub>+64<sub>10</sub> ≀4=>KNIGHT, 64=>White≀
 
-```csharp
-    public enum Color
-    {
-        Black = 0,
-        White = 64
-    }
-
-    public enum ChessmanType
-    {
-        EMPTY = 0,
-        PAWN = 1,
-        ROOK = 2,
-        KNIGHT = 4,
-        BISHOP = 8,
-        QUEEN = 16,
-        KING = 32,
-    }
-```
+:::code language="csharp" source="Assets/cs/Enums.cs" id="ColorAndType":::
 
 ## Status of project:
 In the course of implementation.
