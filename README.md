@@ -32,7 +32,23 @@ For example:
     squere B1 ≀column №1, row №0 => 1*8+0=8≀ => 8th position at array  
     44<sub>16</sub>=68<sub>10</sub>=4<sub>10</sub>+64<sub>10</sub> ≀4=>KNIGHT, 64=>White≀
 
-:::code language="csharp" source="Assets/cs/Enums.cs" id="ColorAndType":::
+```csharp
+    public enum Color
+    {
+        Black = 0,
+        White = 64
+    }
+    public enum ChessmanType
+    {
+        EMPTY = 0,
+        PAWN = 1,
+        ROOK = 2,
+        KNIGHT = 4,
+        BISHOP = 8,
+        QUEEN = 16,
+        KING = 32,
+    }
+```
 
 ## Status of project:
 In the course of implementation.
