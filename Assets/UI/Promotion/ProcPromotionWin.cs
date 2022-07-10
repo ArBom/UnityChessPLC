@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Assets;
+using System.Collections;
 using System.Threading;
 using System;
 
@@ -22,12 +23,14 @@ public class ProcPromotionWin : MonoBehaviour
     void Start()
     {
         animation = this.GetComponent<Animation>();
+        SetUnactive();
     }
 
     public void ShowYourself(Assets.Color actualColor)
     {
         if (!IsShown)
         {
+            SetActive();
             colorChange?.Invoke(actualColor);
             IsShown = true;
             animation.Play("ShowPromotionWin");
@@ -48,8 +51,26 @@ public class ProcPromotionWin : MonoBehaviour
         if (IsShown)
         {
             IsShown = false;
-            animation.Play("HidePromotionWin");
+            animation.Play("HidePromotionWin"); //In the end of animation call SetUnactive()
             choose?.Invoke(newChessmanType);
         }
+    }
+
+    private void SetActive()
+    {
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(true);
+        }
+        this.gameObject.SetActive(true);
+    }
+
+    private void SetUnactive() //Its called in the end of "HidePromotionWin" animation
+    {
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(false);
+        }
+        this.gameObject.SetActive(false);
     }
 }

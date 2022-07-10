@@ -6,6 +6,7 @@ using Sharp7;
 public class CommuniProc : MonoBehaviour
 {
     public Chessboard chessboard;
+    public ProcCamera procCamera;
 
     readonly string IPaddr = "192.168.0.1";
     readonly int rack = 0;
@@ -15,13 +16,13 @@ public class CommuniProc : MonoBehaviour
 
     private void Awake()
     {
-
+        procCamera.showComm += ChangeActive;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //chessboard.turnChange += UpdateData;
+        SetUnactive();
     }
 
     void UpdateData(Assets.Color newColor)
@@ -63,5 +64,31 @@ public class CommuniProc : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void ChangeActive(bool active)
+    {
+        if (active)
+            SetActive();
+        else
+            SetUnactive();
+    }
+
+    private void SetActive()
+    {
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(true);
+        }
+        this.gameObject.SetActive(true);
+    }
+
+    private void SetUnactive()
+    {
+        for (int a = 0; a < transform.childCount; a++)
+        {
+            transform.GetChild(a).gameObject.SetActive(false);
+        }
+        this.gameObject.SetActive(false);
     }
 }

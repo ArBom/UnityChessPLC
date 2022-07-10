@@ -8,6 +8,10 @@ public class ProcUI : MonoBehaviour
     new private Animation animation;
     public Chessboard chessboard;
 
+    private bool settiIcon = true;
+    public delegate void Clicked(bool setti);
+    public event Clicked clicked;
+
     private void Awake()
     {
         animation = GetComponent<Animation>();
@@ -16,13 +20,13 @@ public class ProcUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        chessboard.turnChange += TurnTo;
+        chessboard.turnChange += TurnTo;       
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnMouseUpAsButton()
     {
-        
+        settiIcon = !settiIcon;
+        clicked?.Invoke(settiIcon);
     }
 
     void TurnTo(Assets.Color newColor)
