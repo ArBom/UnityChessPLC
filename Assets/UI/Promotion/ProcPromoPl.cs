@@ -18,7 +18,19 @@ public class ProcPromoPl : MonoBehaviour
     {
         procPromotionWin.colorChange += UpdateMaterial;
 
-        thisChessmanType = chessman.GetComponent<Chessman>().chessmanType;
+        UnityEngine.Component ch;
+
+        if (chessman.TryGetComponent(typeof(ProcQueen), out ch))
+            thisChessmanType = ChessmanType.QUEEN;
+        else if ((chessman.TryGetComponent(typeof(ProcKnight), out ch)))
+            thisChessmanType = ChessmanType.KNIGHT;
+        else if ((chessman.TryGetComponent(typeof(ProcRook), out ch)))
+            thisChessmanType = ChessmanType.ROOK;
+        else if ((chessman.TryGetComponent(typeof(ProcBishop), out ch)))
+            thisChessmanType = ChessmanType.BISHOP;
+
+        ch = null;
+
         animation = light.GetComponent<Animation>();
 
         promoChessman = Instantiate(chessman);

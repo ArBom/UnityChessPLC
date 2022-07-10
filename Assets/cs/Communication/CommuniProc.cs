@@ -17,6 +17,7 @@ public class CommuniProc : MonoBehaviour
     private void Awake()
     {
         procCamera.showComm += ChangeActive;
+        chessboard.turnChange += UpdateData;
     }
 
     // Start is called before the first frame update
@@ -39,6 +40,7 @@ public class CommuniProc : MonoBehaviour
             for (int a = 0; a != db1Buffer.Length; ++a)
             {
                 db1Buffer[a] = (byte)chessboard.s7ChType[a];
+                print(db1Buffer[a]);
             }
 
             int writing = s7Client.DBWrite(1, START_INDEX, db1Buffer.Length, db1Buffer);
@@ -85,10 +87,10 @@ public class CommuniProc : MonoBehaviour
 
     private void SetUnactive()
     {
-        for (int a = 0; a < transform.childCount; a++)
+        /*for (int a = 0; a < transform.childCount; a++)
         {
             transform.GetChild(a).gameObject.SetActive(false);
-        }
+        }*/
         this.gameObject.SetActive(false);
     }
 }
