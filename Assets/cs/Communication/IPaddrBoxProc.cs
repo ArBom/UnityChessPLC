@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class IPaddrBoxProc : MonoBehaviour
 {
+    public Text statusInfo;
     private InputField inputField;
     protected IPAddress address;
 
@@ -37,17 +38,22 @@ public class IPaddrBoxProc : MonoBehaviour
             long PingRes = CommHelper.GetPing(address).Result;
             if (PingRes > 0)
             {
+                statusInfo.text = "\uE0F7\" Device answer, not PLC";
+
                 this.GetComponent<Image>().color = new Color(0, .95f, .1f);
                 if (CommHelper.TryConnect(address))
-                    print("OK");
+                    statusInfo.text = "\uE0E7\" OK";
             }
             else
+            {
                 this.GetComponent<Image>().color = new Color(.95f, .95f, 0);
+                statusInfo.text = "\uE0F6\" Device not answer.";
+            }
         }
         else
         {
             this.GetComponent<Image>().color = new Color(1, .5f, .5f);
-            print("Not IP");
+            statusInfo.text = "\uE10A\" Not IP.";
         }
     }
 
