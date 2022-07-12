@@ -49,8 +49,8 @@ public class ProcRook : Chessman
         List<ChequerPos> confuting = new List<ChequerPos>();
         List<ChequerPos> protect = new List<ChequerPos>();
 
-        short columnToCheck = position.Value.column;
-        short rowToCheck = position.Value.row;
+        short columnToCheck = position.column;
+        short rowToCheck = position.row;
 
         CanMoveInto canMoveInto;
 
@@ -73,7 +73,7 @@ public class ProcRook : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.Value.row;
+        rowToCheck = position.row;
 
         do //S
         {
@@ -94,7 +94,7 @@ public class ProcRook : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.Value.row;
+        rowToCheck = position.row;
 
         do //W
         {
@@ -115,7 +115,7 @@ public class ProcRook : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        columnToCheck = position.Value.column;
+        columnToCheck = position.column;
 
         do //E
         {
@@ -137,7 +137,7 @@ public class ProcRook : Chessman
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
 
-        ChequerPos marked = this.position.Value;
+        ChequerPos marked = this.position;
 
         return (marked, possible, confuting, protect);
     }

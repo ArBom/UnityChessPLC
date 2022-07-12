@@ -6,7 +6,7 @@ using TMPro;
 
 public class CubeRS : MonoBehaviour
 {
-    public ChequerPos? chequerPos = null;
+    public ChequerPos chequerPos = null;
     public Chessman chessman = null;
     public static Chessboard chessboard;
     public Light lightOfCube;
@@ -63,7 +63,7 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+        if (chequerPos.column < 0 || chequerPos.column > 7 || chequerPos.row < 0 || chequerPos.row > 7)
             return;
 
         ColorofSelection = rend.material.GetColor("_Color");
@@ -72,7 +72,7 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+        if (chequerPos.column < 0 || chequerPos.column > 7 || chequerPos.row < 0 || chequerPos.row > 7)
             return;
 
         rend.material.SetColor("_Color", ColorofSelection);
@@ -80,15 +80,15 @@ public class CubeRS : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (!chequerPos.HasValue)
+        if (chequerPos == null)
             return;
 
-        if (chequerPos.Value.column < 0 || chequerPos.Value.column > 7 || chequerPos.Value.row < 0 || chequerPos.Value.row > 7)
+        if (chequerPos.column < 0 || chequerPos.column > 7 || chequerPos.row < 0 || chequerPos.row > 7)
             return;
 
-        if (this.chessman != null)
+        if (this.chessman == null)
         {
-            if (chessboard.TryMoveInto(chequerPos.Value))
+            if (chessboard.TryMoveInto(chequerPos))
                 return;
         }
 
@@ -100,7 +100,7 @@ public class CubeRS : MonoBehaviour
         }
         else if (this.chessman == null)
         {
-            chessboard.TryMoveInto(chequerPos.Value);
+            chessboard.TryMoveInto(chequerPos);
         }
     }
 
@@ -118,16 +118,16 @@ public class CubeRS : MonoBehaviour
             row = Row
         };
 
-        if (chequerPos.HasValue)
+        if (chequerPos != null)
             return false;
 
         chequerPos = temp;
-        this.Color = (this.chequerPos.Value.column + this.chequerPos.Value.row) % 2 == 0 ? Assets.Color.White : Assets.Color.Black;
+        this.Color = (this.chequerPos.column + this.chequerPos.row) % 2 == 0 ? Assets.Color.White : Assets.Color.Black;
 
         if (Row > -1 && Column > -1 && Row < 8 && Column < 8)
         {
-            char name1 = (char)(this.chequerPos.Value.column + 65);
-            string name2 = (this.chequerPos.Value.row + 1).ToString();
+            char name1 = (char)(this.chequerPos.column + 65);
+            string name2 = (this.chequerPos.row + 1).ToString();
             NameOfThis = name1 + name2;
             Destroy(TMP);
             //TMP.text = ChequerPosHelper.ChequerPos2ushort(this.chequerPos.Value).ToString();
@@ -143,7 +143,7 @@ public class CubeRS : MonoBehaviour
             {
                 newZ = 0.4f;
                 this.transform.Translate(new Vector3(0f, 0f, 0.3f));
-                NameOfThis = ((char)(this.chequerPos.Value.column + 65)).ToString();
+                NameOfThis = ((char)(this.chequerPos.column + 65)).ToString();
                 TMP.text = NameOfThis;
             }
 
@@ -153,7 +153,7 @@ public class CubeRS : MonoBehaviour
                 TMP.transform.Rotate(new Vector3(0, 0, 180f));
                 TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
                 this.transform.Translate(new Vector3(0f, 0f, -0.3f));
-                NameOfThis = ((char)(this.chequerPos.Value.column + 65)).ToString();
+                NameOfThis = ((char)(this.chequerPos.column + 65)).ToString();
                 TMP.text = NameOfThis;              
             }
 
@@ -161,7 +161,7 @@ public class CubeRS : MonoBehaviour
             {
                 newX = 0.4f;
                 this.transform.Translate(new Vector3(0.3f, 0f, 0));
-                NameOfThis = (this.chequerPos.Value.row + 1).ToString();
+                NameOfThis = (this.chequerPos.row + 1).ToString();
                 TMP.text = NameOfThis;
             }
 
@@ -171,7 +171,7 @@ public class CubeRS : MonoBehaviour
                 TMP.transform.Rotate(new Vector3(0, 0, 180f));
                 TMP.transform.Translate(new Vector3(-0.7f, 0.08f, 0));
                 this.transform.Translate(new Vector3(-0.3f, 0f, 0));
-                NameOfThis = (this.chequerPos.Value.row + 1).ToString();
+                NameOfThis = (this.chequerPos.row + 1).ToString();
                 TMP.text = NameOfThis;
             }
 

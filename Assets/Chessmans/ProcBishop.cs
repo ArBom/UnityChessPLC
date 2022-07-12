@@ -48,8 +48,8 @@ public class ProcBishop : Chessman
         List<ChequerPos> confuting = new List<ChequerPos>();
         List<ChequerPos> protect = new List<ChequerPos>();
 
-        short columnToCheck = position.Value.column;
-        short rowToCheck = position.Value.row;
+        short columnToCheck = position.column;
+        short rowToCheck = position.row;
 
         CanMoveInto canMoveInto;
 
@@ -73,8 +73,8 @@ public class ProcBishop : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.Value.row;
-        columnToCheck = position.Value.column;
+        rowToCheck = position.row;
+        columnToCheck = position.column;
 
         do //SE
         {
@@ -96,8 +96,8 @@ public class ProcBishop : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.Value.row;
-        columnToCheck = position.Value.column;
+        rowToCheck = position.row;
+        columnToCheck = position.column;
 
         do //SW
         {
@@ -119,8 +119,8 @@ public class ProcBishop : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.Value.row;
-        columnToCheck = position.Value.column;
+        rowToCheck = position.row;
+        columnToCheck = position.column;
 
         do //NW
         {
@@ -142,9 +142,9 @@ public class ProcBishop : Chessman
             }
         }
         while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        columnToCheck = position.Value.column;
+        columnToCheck = position.column;
 
-        ChequerPos marked = this.position.Value;
+        ChequerPos marked = this.position;
 
         return (marked, possible, confuting, protect);
     }

@@ -43,6 +43,9 @@ public class Chessboard : MonoBehaviour
     private uint[] s7Moves = new uint[64];
     private bool s7WhiteTour;
 
+    private History history;
+    private HistoryMove historyMove;
+
     public Assets.Color actualTurn
     {
         get;
@@ -130,6 +133,11 @@ public class Chessboard : MonoBehaviour
 
         //audio Source
         audioSource = this.GetComponent<AudioSource>();
+
+        //History
+        history = new History();
+        historyMove = new HistoryMove();
+        turnChange += AddHistoryMove;
     }
 
     // Start is called before the first frame update
@@ -374,9 +382,9 @@ public class Chessboard : MonoBehaviour
             if (CRS.chessman != null)
                 if (CRS.chessman.chessmanType == ChessmanType.KING)
                     if (CRS.chessman.color == Assets.Color.White)
-                        positionOfWhiteKing = CRS.chessman.position.Value;
+                        positionOfWhiteKing = CRS.chessman.position;
                     else
-                        positionOfBlackKing = CRS.chessman.position.Value;
+                        positionOfBlackKing = CRS.chessman.position;
 
         List<Assets.Color> ToReturn = new List<Assets.Color>(); 
 
@@ -413,6 +421,11 @@ public class Chessboard : MonoBehaviour
         turnChange?.Invoke(actualTurn);
     }
 
+    private void AddHistoryMove (Assets.Color c)
+    {
+
+    }
+
     private void PlayAudioClip(Assets.Color c)
     {
         if (audioSource.isPlaying)
@@ -439,9 +452,9 @@ public class Chessboard : MonoBehaviour
         foreach(var c in chequers)
         {
             if (c.chessman != null)
-                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos.Value)] = c.chessman.s7ChType();
+                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos)] = c.chessman.s7ChType();
             else
-                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos.Value)] = 0;
+                s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos)] = 0;
         }
     }
 }

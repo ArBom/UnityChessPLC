@@ -10,7 +10,7 @@ namespace Assets
 {
     public abstract class Chessman : MonoBehaviour
     {
-        public Chessboard chessboard;
+        protected Chessboard chessboard;
         public Color color { get; private set; }
         public Material PureMaterial;
         public Material MuddyMaterial;
@@ -29,7 +29,7 @@ namespace Assets
 
         protected Mesh mesh;
 
-        public ChequerPos? position = null;
+        public ChequerPos position = null;
         private ChequerPos oldPosition;
         private float ratioOfMove = 1f;
         private const float speed = 0.4f;
@@ -69,9 +69,9 @@ namespace Assets
                     ratioOfMove = 1;
                 }
 
-                this.transform.localPosition = new Vector3(position.Value.column * ratioOfMove + oldPosition.column * (1 - ratioOfMove), 
+                this.transform.localPosition = new Vector3(position.column * ratioOfMove + oldPosition.column * (1 - ratioOfMove), 
                                                            0, 
-                                                           position.Value.row * ratioOfMove + oldPosition.row * (1 - ratioOfMove));
+                                                           position.row * ratioOfMove + oldPosition.row * (1 - ratioOfMove));
             }
         }
 
@@ -134,11 +134,11 @@ namespace Assets
                 else
                     nieDrgnal = false;
 
-                if (this.position.HasValue)
+                if (this.position != null)
                 {
-                    chessboard.chequers[newPos.column, newPos.row].chessman = chessboard.chequers[position.Value.column, position.Value.row].chessman;
-                    chessboard.chequers[position.Value.column, position.Value.row].chessman = null;
-                    oldPosition = position.Value;
+                    chessboard.chequers[newPos.column, newPos.row].chessman = chessboard.chequers[position.column, position.row].chessman;
+                    chessboard.chequers[position.column, position.row].chessman = null;
+                    oldPosition = position;
                     position = newPos;
 
                     ratioOfMove = 0;
@@ -146,7 +146,7 @@ namespace Assets
                 else
                 {
                     position = newPos;
-                    this.transform.localPosition = new Vector3(position.Value.column, 0, position.Value.row);
+                    this.transform.localPosition = new Vector3(position.column, 0, position.row);
                 }
 
                 return true;
@@ -298,7 +298,7 @@ namespace Assets
 
         public void ConfutionEvent()
         {
-            ConfutedHandler?.Invoke(position.Value);
+            ConfutedHandler?.Invoke(position);
             Destroy(this.gameObject, 0.5f);
         }
 

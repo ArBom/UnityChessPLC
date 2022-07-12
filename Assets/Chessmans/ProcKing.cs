@@ -67,7 +67,7 @@ public class ProcKing : Chessman
         //TODO dopisać sprawzenie czy pole nie jest szachowane
 
         //N
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)position.Value.column };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row + 1), column = (short)position.column };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -83,7 +83,7 @@ public class ProcKing : Chessman
         }
 
         //NE
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column + 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row + 1), column = (short)(position.column + 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -99,7 +99,7 @@ public class ProcKing : Chessman
         }
 
         //E
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column + 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row), column = (short)(position.column + 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -107,7 +107,7 @@ public class ProcKing : Chessman
             if (nieDrgnal)
             {
                 if (CheckMoves.checkCastlingPos(this.color, false, chessboard.Checked, chessboard.chequers))
-                    possible.Add(new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column + 2) });
+                    possible.Add(new ChequerPos() { row = (short)(position.row), column = (short)(position.column + 2) });
             }
         }
         else if (canMoveInto == CanMoveInto.TakenO)
@@ -120,7 +120,7 @@ public class ProcKing : Chessman
         }
 
         //SE
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column + 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row - 1), column = (short)(position.column + 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -136,7 +136,7 @@ public class ProcKing : Chessman
         }
 
         //S
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row - 1), column = (short)(position.column) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -152,7 +152,7 @@ public class ProcKing : Chessman
         }
 
         //SW
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row - 1), column = (short)(position.Value.column - 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row - 1), column = (short)(position.column - 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -168,7 +168,7 @@ public class ProcKing : Chessman
         }
 
         //W
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column - 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row), column = (short)(position.column - 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -176,7 +176,7 @@ public class ProcKing : Chessman
             if (nieDrgnal)
             {
                 if (CheckMoves.checkCastlingPos(this.color, true, chessboard.Checked, chessboard.chequers))
-                    possible.Add(new ChequerPos() { row = (short)(position.Value.row), column = (short)(position.Value.column - 2) });
+                    possible.Add(new ChequerPos() { row = (short)(position.row), column = (short)(position.column - 2) });
             }
         }
         else if (canMoveInto == CanMoveInto.TakenO)
@@ -189,7 +189,7 @@ public class ProcKing : Chessman
         }
 
         //NW
-        tempChequerPos = new ChequerPos() { row = (short)(position.Value.row + 1), column = (short)(position.Value.column - 1) };
+        tempChequerPos = new ChequerPos() { row = (short)(position.row + 1), column = (short)(position.column - 1) };
         canMoveInto = chessboard.Check(color, tempChequerPos);
         if (canMoveInto == CanMoveInto.Empty)
         {
@@ -213,7 +213,7 @@ public class ProcKing : Chessman
             {
                 if (Occ.chessman.chessmanType == ChessmanType.KING && Occ.chessman.color != this.color)
                 {
-                    OppoKingPos = Occ.chessman.position.Value;
+                    OppoKingPos = Occ.chessman.position;
                     break;
                 }
             }
@@ -232,7 +232,7 @@ public class ProcKing : Chessman
         }
         //king cannot touch another king up
 
-        ChequerPos marked = this.position.Value;
+        ChequerPos marked = this.position;
 
         return (marked, possible, confuting, protect);
     }
