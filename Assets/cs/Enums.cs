@@ -30,19 +30,19 @@ namespace Assets
         //Segoe UI Symbols
         public static readonly Dictionary<uint, string> ChessnansSymbols = new Dictionary<uint, string>
         {
-            {1,  "\u2659" }, //Black Pawn
-            {2,  "\u2656" }, //Black Rook
-            {4,  "\u2658" }, //Black Knight
-            {8,  "\u2658" }, //Black Bishop
-            {16, "\u2655" }, //Black Queen
-            {32, "\u2654" }, //Black King
+            {1,  "\u265F" }, //Black Pawn
+            {2,  "\u265C" }, //Black Rook
+            {4,  "\u265E" }, //Black Knight
+            {8,  "\u265D" }, //Black Bishop
+            {16, "\u265B" }, //Black Queen
+            {32, "\u265A" }, //Black King
 
-            {65, "\u265F" }, //White Pawn
-            {66, "\u265C" }, //White Rook
-            {68, "\u265E" }, //White Knight
-            {72, "\u265D" }, //White Bishop
-            {80, "\u265B" }, //White Queen
-            {96, "\u265A" }, //White King
+            {65, "\u2659" }, //White Pawn
+            {66, "\u2656" }, //White Rook
+            {68, "\u2658" }, //White Knight
+            {72, "\u2658" }, //White Bishop
+            {80, "\u2655" }, //White Queen
+            {96, "\u2654" }, //White King
         };
     }
 

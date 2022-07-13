@@ -151,7 +151,11 @@ public class Chessboard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.anyKey)
+            if (Input.GetKeyDown("s"))
+            {
+                history.SaveToFile();
+            }
     }
 
     private (List<ChequerPos> ByWhite, List<ChequerPos> Byblack) CheckChecked(CubeRS[,] chequers = null)

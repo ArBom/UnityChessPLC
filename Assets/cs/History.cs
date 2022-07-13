@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 
 namespace Assets.cs
 {
@@ -36,10 +38,36 @@ namespace Assets.cs
 
             for (int i = 0; i != Relays.Count; ++i)
             {
-                toReturn += Relays[i].Number + ". " + Relays[i].White + " " + Relays[i].Black + "\n";
+                toReturn += Relays[i].Number + ". " + Relays[i].White.ToShow() + " " + Relays[i].Black.ToShow() + "\n";
             }
 
+            if (relay.White != null)
+                toReturn += relay.Number + ". " + relay.White.ToShow();
+
             return toReturn;
+        }
+
+        public void SaveToFile()
+        {
+            string path = EditorUtility.SaveFilePanel
+            ("Save game state",
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "ChessGame_" + DateTime.Now.ToShortDateString() + ".txt",
+            "txt");
+
+            Task saveTask = new Task(() =>
+            {
+                string ListS = ListIt();
+                byte[] ListB = Encoding.UTF8.GetBytes(ListS);
+
+                using (FileStream file = File.Exists(path) ? File.OpenWrite(path) : File.Create(path))
+                {
+                    file.Write(ListB, 0, ListB.Length);
+                    file.Close();
+                }
+            });
+
+            saveTask.Start();
         }
     }
 
@@ -57,6 +85,9 @@ namespace Assets.cs
         public string Comment;
         public string ToShow()
         {
+            if (BeginP == null || BeginP == String.Empty)
+                return "";
+
             if (Castling)
                 return Comment;
 
