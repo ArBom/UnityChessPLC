@@ -28,7 +28,7 @@ namespace Assets
     public static class FontDic
     {
         //Segoe UI Symbols
-        public static readonly Dictionary<int, string> ChessnansSymbols = new Dictionary<int, string>
+        public static readonly Dictionary<uint, string> ChessnansSymbols = new Dictionary<uint, string>
         {
             {1,  "\u2659" }, //Black Pawn
             {2,  "\u2656" }, //Black Rook
@@ -62,7 +62,7 @@ namespace Assets
         public short column { get; set; }
         public short row { get; set; }
 
-        public string Name()
+        public string NameOfThis()
         {
             string ToReturn = null;
 

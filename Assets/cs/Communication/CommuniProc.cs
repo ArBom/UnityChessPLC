@@ -43,18 +43,34 @@ public class CommuniProc : MonoBehaviour
                 for (int a = 0; a != db1Buffer.Length; ++a)
                 {
                     db1Buffer[a] = (byte)chessboard.s7ChType[a];
-                    print(db1Buffer[a]);
                 }
 
-                int writing = s7Client.DBWrite(1, START_INDEX, db1Buffer.Length, db1Buffer);
+                int writing1 = s7Client.DBWrite(1, START_INDEX, db1Buffer.Length, db1Buffer);
 
-                if (writing == 0)
+                byte White;
+                if (newColor == Assets.Color.White)
+                    White = 0b0_0000_0001;
+                else
+                    White = 0b0_0000_0000;
+
+                byte WhitePLC = 0b0_0000_0000; //2nd byte
+                byte BlackPLC = 0b0_0000_0100; //3nd byte
+
+                byte restB = (byte)(White & WhitePLC & BlackPLC);
+
+                byte[] rest = { restB };
+
+                int writing2 = s7Client.DBWrite(1, 128, 1, rest);
+
+
+
+                if (writing1 == 0 && writing2 ==0)
                 {
                     print("Writing: OK");
                 }
                 else
                 {
-                    s7Client.ErrorText(writing);
+                    s7Client.ErrorText(writing1);
                 }
             }
             else

@@ -87,6 +87,8 @@ public class Chessboard : MonoBehaviour
         //list of moves
         Moves.possible = new List<ChequerPos>();
         Moves.confuting = new List<ChequerPos>();
+        Moves.protect = new List<ChequerPos>();
+        Moves.marked = null;
 
         //list act chequer
         Checked = (new List<ChequerPos>(), new List<ChequerPos>());
@@ -268,6 +270,9 @@ public class Chessboard : MonoBehaviour
 
     public bool TryMoveInto(ChequerPos newChequerPos)
     {
+        if (Moves.marked == null)
+            return false;
+
         if(chequers[Moves.marked.column, Moves.marked.row].chessman.chessmanType == ChessmanType.PAWN)
         {
             if(newChequerPos.row == 0 || newChequerPos.row == 7)
@@ -320,10 +325,30 @@ public class Chessboard : MonoBehaviour
 
         //Move of rook
         short row = kingStart.row;
-        int rookSC = kingEnd.column == 2 ? 0 : 7;
-        int rookEC = kingEnd.column == 2 ? 3 : 5;
+        short rookSC;
+        short rookEC;
+
+        if (kingEnd.column == 2)
+        {
+            rookSC = 0;
+            rookEC = 3;
+
+            //History
+            historyMove.Comment = "O-O-O";
+        }
+        else
+        {
+            rookSC = 7;
+            rookEC = 5;
+
+            //History
+            historyMove.Comment = "O-O";
+        }
 
         chequers[rookSC, row].chessman.SetValues(new ChequerPos() {column = (short)rookEC, row = row }, null);
+
+        //History
+        historyMove.Castling = true;
 
         //Move of the king
         MoveTo(kingEnd);
@@ -331,7 +356,12 @@ public class Chessboard : MonoBehaviour
 
     private void MoveTo(ChequerPos newChequerPos)
     {
+        historyMove.ChessmanIcon = FontDic.ChessnansSymbols[chequers[Moves.marked.column, Moves.marked.row].chessman.s7ChType()];
+
         chequers[Moves.marked.column, Moves.marked.row].chessman.SetValues(newChequerPos, null);
+
+        //History
+        historyMove.BeginP = Moves.marked.NameOfThis();
 
         UnmarkAndSwitchoffLights();
 
@@ -339,7 +369,11 @@ public class Chessboard : MonoBehaviour
         if (CheckIsKingsSave().Count != 0)
         {
             toPlay = kingindangerAC;
+            historyMove.KingInDanger = true;
         }
+
+        //History
+        historyMove.EndP = newChequerPos.NameOfThis();
 
         ChangeTurn();
     }
@@ -360,12 +394,19 @@ public class Chessboard : MonoBehaviour
         CreateChessman(chessmanType, new ChequerPos { column = Moves.marked.column, row = Moves.marked.row }, actualTurn);
         TryMoveInto(ChequerPosAfterPromo);
         ChequerPosAfterPromo = new ChequerPos();
+
+        //History
+        historyMove.Promotion = true;
+        historyMove.Comment = chessmanType.ToString();
     }
 
     private void ConfuteAndMove(ChequerPos newChequerPos)
     {
         chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
         chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
+
+        //History
+        historyMove.Confution = true;
     }
 
     private List<Assets.Color> CheckIsKingsSave(CubeRS[,] chequersIn = null)
@@ -423,7 +464,8 @@ public class Chessboard : MonoBehaviour
 
     private void AddHistoryMove (Assets.Color c)
     {
-
+        history.NewMove(historyMove);
+        historyMove = new HistoryMove();
     }
 
     private void PlayAudioClip(Assets.Color c)

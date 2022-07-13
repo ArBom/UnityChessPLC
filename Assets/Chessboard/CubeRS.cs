@@ -98,7 +98,7 @@ public class CubeRS : MonoBehaviour
             chessboard.Moves = chessman.Moves();
             chessboard.GiveColors();
         }
-        else if (this.chessman == null)
+        else if (this.chessman != null)
         {
             chessboard.TryMoveInto(chequerPos);
         }

@@ -13,7 +13,8 @@ public class ProcPawn : Chessman
     private void Awake()
     {
         AddPier(false, true, .2f, .1f);
-        Marge();
+        meshOfPier.RecalculateNormals();
+        GetComponent<MeshFilter>().mesh = meshOfPier;
 
         chessmanType = ChessmanType.PAWN;
     }
