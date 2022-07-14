@@ -8,7 +8,7 @@ public class ProcPromoPl : MonoBehaviour
     public GameObject chessman;
     public Light light;
     private ChessmanType thisChessmanType;
-    private Animation animation;
+    private Animation animationL;
     private GameObject promoChessman;
 
     public ProcPromotionWin procPromotionWin;
@@ -28,10 +28,9 @@ public class ProcPromoPl : MonoBehaviour
             thisChessmanType = ChessmanType.ROOK;
         else if ((chessman.TryGetComponent(typeof(ProcBishop), out ch)))
             thisChessmanType = ChessmanType.BISHOP;
-
         ch = null;
 
-        animation = light.GetComponent<Animation>();
+        animationL = light.GetComponent<Animation>();
 
         promoChessman = Instantiate(chessman);
 
@@ -66,11 +65,9 @@ public class ProcPromoPl : MonoBehaviour
         promoChessman.GetComponent<Renderer>().material = ChessmanComp.PureMaterial;
         promoChessman.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
-        Animation chessAnim = promoChessman.GetComponent<Animation>();
-        chessAnim.wrapMode = WrapMode.Loop;
-        chessAnim.Play("ChessmanRotate");
-
         ChessmanComp.transform.localPosition = chessLocalPosition;
+
+        OnEnable();
     }
 
     void UpdateMaterial(Assets.Color newColor)
@@ -83,6 +80,13 @@ public class ProcPromoPl : MonoBehaviour
             promoChessman.GetComponent<Renderer>().material = ChessmanComp.MuddyMaterial;
     }
 
+    private void OnEnable()
+    {
+        Animation chessAnim = promoChessman.GetComponent<Animation>();
+        chessAnim.wrapMode = WrapMode.Loop;
+        chessAnim.Play("ChessmanRotate");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -91,13 +95,16 @@ public class ProcPromoPl : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        animation.Play("SwitchBlueLightOn");
+        animationL.Play("SwitchBlueLightOn");
     }
 
     private void OnMouseExit()
     {
-        animation.Stop();
-        light.range = 0f;
+        if (light.isActiveAndEnabled)
+        {
+            animationL.Stop();
+            light.range = 0f;
+        }
     }
 
     private void OnMouseUpAsButton()

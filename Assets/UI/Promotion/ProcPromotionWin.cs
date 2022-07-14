@@ -62,6 +62,7 @@ public class ProcPromotionWin : MonoBehaviour
             transform.GetChild(a).gameObject.SetActive(true);
         }
         this.gameObject.SetActive(true);
+        animation = this.GetComponent<Animation>();
     }
 
     private void SetUnactive() //Its called in the end of "HidePromotionWin" animation

@@ -397,7 +397,6 @@ public class Chessboard : MonoBehaviour
         chequers[Moves.marked.column, Moves.marked.row].chessman = null;
         CreateChessman(chessmanType, new ChequerPos { column = Moves.marked.column, row = Moves.marked.row }, actualTurn);
         TryMoveInto(ChequerPosAfterPromo);
-        ChequerPosAfterPromo = new ChequerPos();
 
         //History
         historyMove.Promotion = true;
