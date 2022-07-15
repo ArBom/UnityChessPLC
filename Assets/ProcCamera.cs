@@ -22,6 +22,9 @@ public class ProcCamera : MonoBehaviour
     public ShowComm showComm;
 
     private const bool camMove = true;
+    private const bool camCanBounce = true;
+    private float Lookat = 3.5f;
+    private Vector4 camBounTarPos;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +34,12 @@ public class ProcCamera : MonoBehaviour
         if (camMove)
         {
             chessboard.turnChange += TurnChange;
+            chessboard.markedCubeCh += Bounce;
             angleCamera = -180;
             TurnChange(Assets.Color.White);
         }
+
+        camBounTarPos = new Vector4(4, 6, -3.5f, 3.5f);
     }
 
     private void ShowSetti(bool show)
@@ -61,11 +67,26 @@ public class ProcCamera : MonoBehaviour
         if (!camMove)
             return;
 
-        if (angleCamera == targetCameraAngle && CameraY == TargetCameraY)
+        if (angleCamera == targetCameraAngle && CameraY == TargetCameraY && TargetCameraY != SettingY)
+        {
+            if (camCanBounce)
+            {
+                Camera.main.transform.position = new Vector3(.92f * Camera.main.transform.position.x + .08f * camBounTarPos.x,
+                                                             .92f * Camera.main.transform.position.y + .08f * camBounTarPos.y,
+                                                             .92f * Camera.main.transform.position.z + .08f * camBounTarPos.z);
+
+                Lookat = .93f * Lookat + 0.07f * camBounTarPos.w;
+
+                Camera.main.transform.LookAt(new Vector3(3.5f, 0, Lookat));
+            }
             return;
+        }
 
         CalcCamposChessboard();
         CalcCamposSetti();
+
+        camBounTarPos = Camera.main.transform.position;
+        camBounTarPos.w = Lookat;
     }
 
     private void CalcCamposChessboard()
@@ -86,8 +107,8 @@ public class ProcCamera : MonoBehaviour
                 }
         }
 
-        float x = (float)(4 + (13 * Math.Sin(2 * Math.PI * angleCamera / 360)));
-        float z = (float)(3 + (6.5 * Math.Cos(2 * Math.PI * angleCamera / 360)));
+        float x = (float)(3.5f + (13 * Math.Sin(2 * Math.PI * angleCamera / 360)));
+        float z = (float)(3.5f + (6.5 * Math.Cos(2 * Math.PI * angleCamera / 360)));
         float y = (float)(6 + (6 * Math.Sin(2 * Math.PI * angleCamera / 180)));
 
         Camera.main.transform.position = new Vector3(x, y, z);
@@ -116,6 +137,36 @@ public class ProcCamera : MonoBehaviour
             }
         }
 
-        Camera.main.transform.LookAt(new Vector3(4, CameraY, 4));
+        Camera.main.transform.LookAt(new Vector3(3.5f, CameraY, 3.5f));
+    }
+
+    private void Bounce(ChequerPos chequerPos, bool Exit)
+    {
+        if (!camCanBounce)
+            return;
+
+        if (Camera.main.transform.position.z < 0) //Camera looks as white player
+        {
+            camBounTarPos = Camera.main.transform.position;
+
+            camBounTarPos.x = (float)(.165*(chequerPos.column - 3.5) + 3.5); //4 lr
+            camBounTarPos.y = 6 + .175f * (chequerPos.row - 2); //6 ud
+            camBounTarPos.z = -3.5f + .2f * chequerPos.row; //-3,5 d
+            camBounTarPos.w = chequerPos.row < 2 ? 3.5f : (float)(3.5 - 0.17*(chequerPos.row - 2));
+
+            if(Exit)
+            {
+                camBounTarPos.x = 3.5f;
+                camBounTarPos.y = 6;
+                camBounTarPos.z = -3f;
+                camBounTarPos.w = 3.5f;
+            }
+        }
+        else //Camera looks as black player
+        {
+            //4
+            //6
+            //9,5
+        }
     }
 }

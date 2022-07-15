@@ -68,6 +68,8 @@ public class CubeRS : MonoBehaviour
 
         ColorofSelection = rend.material.GetColor("_Color");
         rend.material.SetColor("_Color", UnityEngine.Color.magenta);
+
+        chessboard.CubeEnter(this.chequerPos);
     }
 
     private void OnMouseExit()
@@ -76,6 +78,8 @@ public class CubeRS : MonoBehaviour
             return;
 
         rend.material.SetColor("_Color", ColorofSelection);
+
+        chessboard.CubeExit(this.chequerPos);
     }
 
     private void OnMouseUpAsButton()

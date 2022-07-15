@@ -55,6 +55,9 @@ public class Chessboard : MonoBehaviour
     public delegate void TurnChange(Assets.Color newColor);
     public event TurnChange turnChange;
 
+    public delegate void MarkedCubeCh(ChequerPos chequerPos, bool Exit);
+    public event MarkedCubeCh markedCubeCh;
+
     private ChequerPos ChequerPosAfterPromo;
     private AudioSource audioSource;
 
@@ -501,5 +504,15 @@ public class Chessboard : MonoBehaviour
             else
                 s7ChType[ChequerPosHelper.ChequerPos2ushort(c.chequerPos)] = 0;
         }
+    }
+
+    public void CubeEnter(ChequerPos chequerPos)
+    {
+        markedCubeCh?.Invoke(chequerPos, false);
+    }
+
+    public void CubeExit(ChequerPos chequerPos)
+    {
+        markedCubeCh?.Invoke(chequerPos, true);
     }
 }
