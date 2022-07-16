@@ -39,7 +39,7 @@ public class ProcCamera : MonoBehaviour
             TurnChange(Assets.Color.White);
         }
 
-        camBounTarPos = new Vector4(4, 6, -3.5f, 3.5f);
+        camBounTarPos = new Vector4(4, 6, -4f, 3.5f);
     }
 
     private void ShowSetti(bool show)
@@ -140,7 +140,7 @@ public class ProcCamera : MonoBehaviour
         Camera.main.transform.LookAt(new Vector3(3.5f, CameraY, 3.5f));
     }
 
-    private void Bounce(ChequerPos chequerPos, bool Exit)
+    private void Bounce(ChequerPos chequerPos, string Icon)
     {
         if (!camCanBounce)
             return;
@@ -154,19 +154,31 @@ public class ProcCamera : MonoBehaviour
             camBounTarPos.z = -3.5f + .2f * chequerPos.row; //-3,5 d
             camBounTarPos.w = chequerPos.row < 2 ? 3.5f : (float)(3.5 - 0.17*(chequerPos.row - 2));
 
-            if(Exit)
+            if (Icon == null)
             {
                 camBounTarPos.x = 3.5f;
                 camBounTarPos.y = 6;
-                camBounTarPos.z = -3f;
+                camBounTarPos.z = -4f;
                 camBounTarPos.w = 3.5f;
             }
         }
         else //Camera looks as black player
         {
-            //4
-            //6
-            //9,5
+            camBounTarPos = Camera.main.transform.position;
+            camBounTarPos.w = 3.5f;
+
+            camBounTarPos.x = (float)(.165 * (chequerPos.column - 3.5) + 3.5); //4 lr
+            camBounTarPos.y = 6 + .175f * (2 - chequerPos.row); //6 ud
+            camBounTarPos.z = 10.5f - .2f * (7 - chequerPos.row); //10.5 d
+            camBounTarPos.w = chequerPos.row > 5 ? 3.5f : (float)(3.5 + 0.17 * (-chequerPos.row + 5));
+
+            if (Icon == null)
+            {
+                camBounTarPos.x = 3.5f;
+                camBounTarPos.y = 6;
+                camBounTarPos.z = 10.5f;
+                camBounTarPos.w = 3.5f;
+            }
         }
     }
 }

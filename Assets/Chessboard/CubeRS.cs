@@ -69,7 +69,11 @@ public class CubeRS : MonoBehaviour
         ColorofSelection = rend.material.GetColor("_Color");
         rend.material.SetColor("_Color", UnityEngine.Color.magenta);
 
-        chessboard.CubeEnter(this.chequerPos);
+        string chessmanIcon = "\u269C";
+        if(this.chessman != null)
+            chessmanIcon = FontDic.ChessnansSymbols[chessman.s7ChType()];
+
+        chessboard.CubeEnter(this.chequerPos, chessmanIcon);
     }
 
     private void OnMouseExit()

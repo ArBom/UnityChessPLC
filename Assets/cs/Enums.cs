@@ -40,7 +40,7 @@ namespace Assets
             {65, "\u2659" }, //White Pawn
             {66, "\u2656" }, //White Rook
             {68, "\u2658" }, //White Knight
-            {72, "\u2658" }, //White Bishop
+            {72, "\u2657" }, //White Bishop
             {80, "\u2655" }, //White Queen
             {96, "\u2654" }, //White King
         };

@@ -55,7 +55,7 @@ public class Chessboard : MonoBehaviour
     public delegate void TurnChange(Assets.Color newColor);
     public event TurnChange turnChange;
 
-    public delegate void MarkedCubeCh(ChequerPos chequerPos, bool Exit);
+    public delegate void MarkedCubeCh(ChequerPos chequerPos, string Icon);
     public event MarkedCubeCh markedCubeCh;
 
     private ChequerPos ChequerPosAfterPromo;
@@ -506,13 +506,13 @@ public class Chessboard : MonoBehaviour
         }
     }
 
-    public void CubeEnter(ChequerPos chequerPos)
+    public void CubeEnter(ChequerPos chequerPos, string Icon)
     {
-        markedCubeCh?.Invoke(chequerPos, false);
+        markedCubeCh?.Invoke(chequerPos, Icon);
     }
 
     public void CubeExit(ChequerPos chequerPos)
     {
-        markedCubeCh?.Invoke(chequerPos, true);
+        markedCubeCh?.Invoke(chequerPos, null);
     }
 }
