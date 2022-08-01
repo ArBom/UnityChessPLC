@@ -4,7 +4,6 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using Sharp7;
 using Assets.cs;
 using System.Threading.Tasks;
 
@@ -417,7 +416,7 @@ public class Chessboard : MonoBehaviour
 
     private List<Assets.Color> CheckIsKingsSave(CubeRS[,] chequersIn = null)
     {
-        CubeRS[,] chequersT = chequersIn == null ? this.chequers : chequersIn;
+        CubeRS[,] chequersT = chequersIn ?? chequers;
 
         ChequerPos positionOfBlackKing = new ChequerPos();
         ChequerPos positionOfWhiteKing = new ChequerPos();
