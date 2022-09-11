@@ -10,6 +10,8 @@ using System;
 [RequireComponent(typeof(MeshCollider))]
 public class ProcPawn : Chessman
 {
+    public bool EnPassantPossible;
+
     private void Awake()
     {
         AddPier(false, true, .2f, .1f);
@@ -17,6 +19,7 @@ public class ProcPawn : Chessman
         GetComponent<MeshFilter>().mesh = meshOfPier;
 
         chessmanType = ChessmanType.PAWN;
+        EnPassantPossible = false;
     }
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves()
@@ -55,6 +58,24 @@ public class ProcPawn : Chessman
         else if (canMoveInto == CanMoveInto.TakenY || canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
             protect.Add(new ChequerPos() { column = (short)(position.column - 1), row = (short)(position.row + direction) });
 
+        if (this.position.column != 0)
+            if (chessboard.chequers[position.column - 1, position.row].chessman != null)
+                if (chessboard.chequers[position.column - 1, position.row].chessman.chessmanType == ChessmanType.PAWN)
+                    if (((ProcPawn)(chessboard.chequers[position.column - 1, position.row].chessman)).EnPassantPossible)
+                        if (chessboard.chequers[position.column - 1, position.row].chessman.color != this.color)
+                        {
+                            confuting.Add(new ChequerPos() { column = (short)(position.column - 1), row = (short)(position.row + direction) });
+                        }
+
+        if (this.position.column != 7)
+            if (chessboard.chequers[position.column + 1, position.row].chessman != null)
+                if (chessboard.chequers[position.column + 1, position.row].chessman.chessmanType == ChessmanType.PAWN)
+                    if (((ProcPawn)(chessboard.chequers[position.column + 1, position.row].chessman)).EnPassantPossible)
+                        if (chessboard.chequers[position.column + 1, position.row].chessman.color != this.color)
+                        {
+                            confuting.Add(new ChequerPos() { column = (short)(position.column + 1), row = (short)(position.row + direction) });
+                        }
+                    
         ChequerPos marked = this.position;
 
         return (marked, possible, confuting, protect);

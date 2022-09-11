@@ -134,6 +134,7 @@ public class Chessboard : MonoBehaviour
         //delegates       
         procPromotionWin.choose += Promo;
         turnChange += PlayAudioClip;
+        turnChange += ResetEP;
 
         //audio Source
         audioSource = this.GetComponent<AudioSource>();
@@ -294,6 +295,12 @@ public class Chessboard : MonoBehaviour
                     return false;
                 }
             }
+
+            //En passant tag
+            if (Math.Abs(Moves.marked.row - newChequerPos.row) == 2)
+            {
+                ((ProcPawn)(chequers[Moves.marked.column, Moves.marked.row].chessman)).EnPassantPossible = true;
+            }
         }
 
         if(Moves.possible.Exists(o => 
@@ -407,8 +414,20 @@ public class Chessboard : MonoBehaviour
 
     private void ConfuteAndMove(ChequerPos newChequerPos)
     {
-        chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
-        chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
+        if (chequers[newChequerPos.column, newChequerPos.row].chessman == null)    //en passant
+        {
+            //History
+            historyMove.Comment = "e.p.";
+
+            chequers[newChequerPos.column, Moves.marked.row].chessman.position.row = newChequerPos.row;
+            chequers[newChequerPos.column, Moves.marked.row].chessman.ConfutedHandler += MoveTo;  //MoveTo() is used in time of animation...
+            chequers[newChequerPos.column, Moves.marked.row].chessman.Confution();                //...animation is started in Confution()
+        }
+        else                                                                       //classical
+        {
+            chequers[newChequerPos.column, newChequerPos.row].chessman.ConfutedHandler += MoveTo; //MoveTo() is used in time of animation...
+            chequers[newChequerPos.column, newChequerPos.row].chessman.Confution();               //...animation is started in Confution()
+        }
 
         //History
         historyMove.Confution = true;
@@ -484,6 +503,28 @@ public class Chessboard : MonoBehaviour
             audioSource.volume = 1f;
 
         audioSource.PlayOneShot(toPlay);
+    }
+
+    //reset En Passant after move
+    private void ResetEP(Assets.Color color)
+    {
+        foreach (var ch in chequers)
+        {
+            //chequer cannot be empty one
+            if (ch.chessman == null)
+                continue;
+
+            //chequer have to be taken by pawn
+            if (ch.chessman.chessmanType != ChessmanType.PAWN)
+                continue;
+
+            //pawn on the chequer have to be opposite
+            if (ch.chessman.color != color)
+                continue;
+           
+            //RESET e.p. value below
+            ((ProcPawn)(ch.chessman)).EnPassantPossible = false;
+        }
     }
 
     //TODO przemyslec ponizsze
