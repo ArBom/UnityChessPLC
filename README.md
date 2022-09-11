@@ -10,6 +10,7 @@ The project aims to familiarize one with the Unity environment and to teach one 
 * Unity Assets:
   - [https://assetstore.unity.com/packages/2d/textures-materials/real-materials-vol-0-free-115597](https://assetstore.unity.com/packages/2d/textures-materials/real-materials-vol-0-free-115597 "Metals' and stones' materials")
   - [https://assetstore.unity.com/packages/2d/textures-materials/9t5-pbr-textures-freebies-171062](https://assetstore.unity.com/packages/2d/textures-materials/9t5-pbr-textures-freebies-171062 "Grass' material")
+  - [https://assetstore.unity.com/packages/2d/textures-materials/sky/free-hdr-sky-61217](https://assetstore.unity.com/packages/2d/textures-materials/sky/free-hdr-sky-61217 "Skybox")
 
 * Font:
   - https://www.1001fonts.com/littlelordfontleroy-font.html
