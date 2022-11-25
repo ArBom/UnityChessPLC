@@ -6,7 +6,7 @@ using Assets;
 public class ProcPromoPl : MonoBehaviour
 {
     public GameObject chessman;
-    public Light light;
+    public new Light light;
     private ChessmanType thisChessmanType;
     private Animation animationL;
     private GameObject promoChessman;

@@ -65,7 +65,9 @@ public class ProcCamera : MonoBehaviour
     void Update()
     {
         if (!camMove)
+            #pragma warning disable CS0162
             return;
+            #pragma warning restore CS0162
 
         if (angleCamera == targetCameraAngle && CameraY == TargetCameraY && TargetCameraY != SettingY)
         {
@@ -143,15 +145,17 @@ public class ProcCamera : MonoBehaviour
     private void Bounce(ChequerPos chequerPos, string Icon)
     {
         if (!camCanBounce)
+            #pragma warning disable CS0162
             return;
+            #pragma warning restore CS0162
 
         if (Camera.main.transform.position.z < 0) //Camera looks as white player
         {
             camBounTarPos = Camera.main.transform.position;
 
-            camBounTarPos.x = (float)(.165*(chequerPos.column - 3.5) + 3.5); //4 lr
-            camBounTarPos.y = 6 + .175f * (chequerPos.row - 2); //6 ud
-            camBounTarPos.z = -3.5f + .2f * chequerPos.row; //-3,5 d
+            camBounTarPos.x = (float)(.165*(chequerPos.column - 3.5) + 3.5);
+            camBounTarPos.y = 6 + .175f * (chequerPos.row - 2);
+            camBounTarPos.z = -3.5f + .2f * chequerPos.row;
             camBounTarPos.w = chequerPos.row < 2 ? 3.5f : (float)(3.5 - 0.17*(chequerPos.row - 2));
 
             if (Icon == null)
@@ -167,9 +171,9 @@ public class ProcCamera : MonoBehaviour
             camBounTarPos = Camera.main.transform.position;
             camBounTarPos.w = 3.5f;
 
-            camBounTarPos.x = (float)(.165 * (chequerPos.column - 3.5) + 3.5); //4 lr
-            camBounTarPos.y = 6 + .175f * (2 - chequerPos.row); //6 ud
-            camBounTarPos.z = 10.5f - .2f * (7 - chequerPos.row); //10.5 d
+            camBounTarPos.x = (float)(.165 * (chequerPos.column - 3.5) + 3.5);
+            camBounTarPos.y = 6 + .175f * (2 - chequerPos.row);
+            camBounTarPos.z = 10.5f - .2f * (7 - chequerPos.row);
             camBounTarPos.w = chequerPos.row > 5 ? 3.5f : (float)(3.5 + 0.17 * (-chequerPos.row + 5));
 
             if (Icon == null)

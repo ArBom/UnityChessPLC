@@ -205,10 +205,12 @@ public class Chessboard : MonoBehaviour
 
     private void CreateChessman(ChessmanType newChessmanType, ChequerPos newChequerPos, Assets.Color color)
     {
-        if (newChessmanType == ChessmanType.EMPTY) //new chessman cannot be EMPTY
+        //new chessman cannot be EMPTY one
+        if (newChessmanType == ChessmanType.EMPTY)
             return;
 
-        if (Check(null, newChequerPos) != CanMoveInto.Empty) //Chequer must be vacant
+        //Chequer must be vacant
+        if (Check(null, newChequerPos) != CanMoveInto.Empty)
             return;
 
         GameObject newChessman;
@@ -440,7 +442,7 @@ public class Chessboard : MonoBehaviour
         ChequerPos positionOfBlackKing = new ChequerPos();
         ChequerPos positionOfWhiteKing = new ChequerPos();
 
-        foreach (var CRS in chequersT)
+        /*foreach (var CRS in chequersT)
             CRS.isKingCheckedHere = false;
 
         foreach (var CRS in chequersT)
@@ -449,7 +451,25 @@ public class Chessboard : MonoBehaviour
                     if (CRS.chessman.color == Assets.Color.White)
                         positionOfWhiteKing = CRS.chessman.position;
                     else
-                        positionOfBlackKing = CRS.chessman.position;
+                        positionOfBlackKing = CRS.chessman.position;*/
+
+        foreach (var CRS in chequersT)
+        {
+            CRS.isKingCheckedHere = false;
+
+            if (CRS.chessman == null)
+                continue;
+
+            if (CRS.chessman.chessmanType != ChessmanType.KING)
+                continue;
+
+            if (CRS.chessman.color == Assets.Color.White)
+                positionOfWhiteKing = CRS.chessman.position;
+            else
+                positionOfBlackKing = CRS.chessman.position;
+        }
+
+        ///////////////////////////
 
         List<Assets.Color> ToReturn = new List<Assets.Color>(); 
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(MeshFilter))]
 public class ProcQueen : Chessman
@@ -44,189 +45,12 @@ public class ProcQueen : Chessman
 
     public override (ChequerPos marked, List<ChequerPos> possible, List<ChequerPos> confuting, List<ChequerPos> protect) Moves()
     {
-        List<ChequerPos> possible = new List<ChequerPos>();
-        List<ChequerPos> confuting = new List<ChequerPos>();
-        List<ChequerPos> protect = new List<ChequerPos>();
+        (List<ChequerPos>, List<ChequerPos>, List<ChequerPos>) ListsOb = CheckLineMoves.NonObliqueLinesOfMove(this.position, this.color, this.chessboard);
+        (List<ChequerPos>, List<ChequerPos>, List<ChequerPos>) ListsNob = CheckLineMoves.ObliqueLinesOfMove(this.position, this.color, this.chessboard);
 
-        short columnToCheck = position.column;
-        short rowToCheck = position.row;
-
-        CanMoveInto canMoveInto;
-
-        do //N
-        {
-            rowToCheck++;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.row;
-
-        do //NE
-        {
-            rowToCheck++;
-            columnToCheck--;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.row;
-        columnToCheck = position.column;
-
-        do //E
-        {
-            columnToCheck--;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        columnToCheck = position.column;
-
-        do //SE
-        {
-            rowToCheck--;
-            columnToCheck--;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.row;
-        columnToCheck = position.column;
-
-        do //S
-        {
-            rowToCheck--;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.row;
-
-        do //SW
-        {
-            rowToCheck--;
-            columnToCheck++;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        rowToCheck = position.row;
-        columnToCheck = position.column;
-
-        do //W
-        {
-            columnToCheck++;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        columnToCheck = position.column;
-
-        do //NW
-        {
-            columnToCheck++;
-            rowToCheck++;
-            canMoveInto = chessboard.Check(color, new ChequerPos() { column = columnToCheck, row = rowToCheck });
-
-            if (canMoveInto == CanMoveInto.TakenO || canMoveInto == CanMoveInto.TakenOButChecked)
-            {
-                confuting.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked)
-            {
-                possible.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-            if (canMoveInto == CanMoveInto.TakenY)
-            {
-                protect.Add(new ChequerPos() { column = columnToCheck, row = rowToCheck });
-            }
-        }
-        while (canMoveInto == CanMoveInto.Empty || canMoveInto == CanMoveInto.EmptyButChecked);
-        columnToCheck = position.column;
+        List<ChequerPos> possible = ListsOb.Item1.Concat(ListsNob.Item1).ToList();
+        List<ChequerPos> confuting = ListsOb.Item2.Concat(ListsNob.Item2).ToList();
+        List<ChequerPos> protect = ListsOb.Item3.Concat(ListsNob.Item3).ToList();
 
         ChequerPos marked = this.position;
 
