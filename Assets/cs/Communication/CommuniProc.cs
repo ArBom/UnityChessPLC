@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using System;
+using Assets;
 
 public class CommuniProc : MonoBehaviour
 {
@@ -27,7 +28,8 @@ public class CommuniProc : MonoBehaviour
             if (value != LastClickPLCcheqer)
             {
                 LastClickPLCcheqer = value;
-                //TODO Next steps
+                ChequerPos chequerPos = ChequerPosHelper.Int2ChequerPos(_LastClickPLCchequer);
+                chessboard.TryMoveInto(chequerPos);
             }
         }
     }
@@ -196,6 +198,8 @@ public class CommuniProc : MonoBehaviour
 
                     _LastClickPLCchequer = (uint)readBuf[0];
                 }
+
+                s7Client.Disconnect();
             }
         }
     }

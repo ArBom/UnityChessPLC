@@ -91,7 +91,7 @@ namespace Assets
             return (ushort)(chequerPosIn.column * 8 + chequerPosIn.row);
         }
 
-        public static ChequerPos Int2ChequerPos(ushort intIn)
+        public static ChequerPos Int2ChequerPos(uint intIn)
         {
             if (intIn > 63)
             {
