@@ -51,6 +51,13 @@ For example:
     }
 ```
 
+## Counterpart at PLC
+![PLC chessman](https://db5pap001files.storage.live.com/y4mE-uGfrUJ9dHMRe6gA8Z_7aPtIx1MVBx2bq4lyivGLRY5oUw7J36L-imiQpmqMZCKPCQVPRAE2WylD1DMKrIG_fZu0A2C15JFpUVD5ok5xV1eZoHRrh51I7pEIv85uj-4AV9q6oUz-DiKMNtb-RyN-WZOIvw8dYDeW2syGDDXpmbxFtBigUlW8jWgYxg8UX3A?width=660&height=457&cropmode=none)
+
+![Chequer stack](https://db5pap001files.storage.live.com/y4m4-sjkYQ6C88SUa5kmdyOBsus8ToJilFnPLjKuhiq7D50h6S5pEMAUmV4qsxjLoUwDImnYR0y0xrPiRJmOv8tkYI-8s3E6JtfIywYCJcapd9CSL4nuN5UVBJtFhHT1SvBKgCChOsOCo64uvqGoNNcoKgYn9SFltnNWMhet60xycPVCYfA05YX35MJt5GqpLIe?width=953&height=888&cropmode=none)
+
+
+
 ## Status of project:
 In the course of implementation.
 
@@ -58,5 +65,5 @@ In the course of implementation.
 * ~~moving chessmans~~ 
   - ~~*en passant* to add~~
 * ~~turn-based game system~~
-* counterpart at PLC
+* ~~counterpart at PLC~~
 * communication with PLC
