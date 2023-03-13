@@ -54,6 +54,8 @@ For example:
 ## Counterpart at PLC
 ![PLC chessman](https://db5pap001files.storage.live.com/y4mE-uGfrUJ9dHMRe6gA8Z_7aPtIx1MVBx2bq4lyivGLRY5oUw7J36L-imiQpmqMZCKPCQVPRAE2WylD1DMKrIG_fZu0A2C15JFpUVD5ok5xV1eZoHRrh51I7pEIv85uj-4AV9q6oUz-DiKMNtb-RyN-WZOIvw8dYDeW2syGDDXpmbxFtBigUlW8jWgYxg8UX3A?width=660&height=457&cropmode=none)
 
+PLC program is implemented in SCL. Data of chessman are  Chessboard could be rotated, depended on actual player turn. In case of rotate of chessboard the list of chessmans is reversed, letters and numbers on board are replaced with an other ones. LastClicked tag is periodically checking by C# app in time of waiting on PLC-game-player move. After read new value of LastClicked tag (after HMI click) it's set on default value, from outside <0; 63> interval.
+
 ![Chequer stack](https://db5pap001files.storage.live.com/y4m4-sjkYQ6C88SUa5kmdyOBsus8ToJilFnPLjKuhiq7D50h6S5pEMAUmV4qsxjLoUwDImnYR0y0xrPiRJmOv8tkYI-8s3E6JtfIywYCJcapd9CSL4nuN5UVBJtFhHT1SvBKgCChOsOCo64uvqGoNNcoKgYn9SFltnNWMhet60xycPVCYfA05YX35MJt5GqpLIe?width=953&height=888&cropmode=none)
 
 
