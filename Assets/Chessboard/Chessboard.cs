@@ -442,17 +442,6 @@ public class Chessboard : MonoBehaviour
         ChequerPos positionOfBlackKing = new ChequerPos();
         ChequerPos positionOfWhiteKing = new ChequerPos();
 
-        /*foreach (var CRS in chequersT)
-            CRS.isKingCheckedHere = false;
-
-        foreach (var CRS in chequersT)
-            if (CRS.chessman != null)
-                if (CRS.chessman.chessmanType == ChessmanType.KING)
-                    if (CRS.chessman.color == Assets.Color.White)
-                        positionOfWhiteKing = CRS.chessman.position;
-                    else
-                        positionOfBlackKing = CRS.chessman.position;*/
-
         foreach (var CRS in chequersT)
         {
             CRS.isKingCheckedHere = false;
@@ -510,6 +499,11 @@ public class Chessboard : MonoBehaviour
     {
         history.NewMove(historyMove);
         historyMove = new HistoryMove();
+    }
+
+    public string HistoryList()
+    {
+        return this.history.ListIt();
     }
 
     private void PlayAudioClip(Assets.Color c)

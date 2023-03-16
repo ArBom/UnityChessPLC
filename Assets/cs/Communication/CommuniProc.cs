@@ -12,8 +12,13 @@ public class CommuniProc : MonoBehaviour
 {
     public Chessboard chessboard;
     public ProcCamera procCamera;
+
+    public ScrollRect History;
+
     public Toggle BlackPlayerT;
     public Toggle WhitePlayerT;
+    public Toggle CameraMoveT;
+    public Toggle CameraBounceT;
 
     readonly string IPaddr = "192.168.0.1";
     readonly int rack = 0;
@@ -57,6 +62,8 @@ public class CommuniProc : MonoBehaviour
         chessboard.turnChange += UpdateData;
         BlackPlayerT.onValueChanged.AddListener(delegate { BToggleCh(BlackPlayerT); });
         WhitePlayerT.onValueChanged.AddListener(delegate { WToggleCh(WhitePlayerT); });
+        CameraMoveT.onValueChanged.AddListener(delegate { CamMovToggleCh(CameraMoveT); });
+        CameraBounceT.onValueChanged.AddListener(delegate { CamBouncToggleCh(CameraBounceT); });
 
         SendingTimer = new System.Timers.Timer(333);
         SendingTimer.Elapsed += OnSendingTimerTick;
@@ -70,6 +77,17 @@ public class CommuniProc : MonoBehaviour
     void Start()
     {
         SetUnactive();
+    }
+
+    void CamMovToggleCh(Toggle change)
+    {
+        CameraBounceT.interactable = change.isOn;
+        procCamera.camMove = change.isOn;
+    }
+
+    void CamBouncToggleCh(Toggle change)
+    {
+        procCamera.camCanBounce = change.isOn;
     }
 
     void BToggleCh(Toggle change)
@@ -171,6 +189,9 @@ public class CommuniProc : MonoBehaviour
         {
             transform.GetChild(a).gameObject.SetActive(true);
         }
+
+        History.GetComponent<Text>().text = chessboard.HistoryList();
+
         this.gameObject.SetActive(true);
     }
 

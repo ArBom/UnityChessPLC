@@ -21,8 +21,8 @@ public class ProcCamera : MonoBehaviour
     public delegate void ShowComm(bool show);
     public ShowComm showComm;
 
-    private const bool camMove = true;
-    private const bool camCanBounce = true;
+    public bool camMove = true;
+    public bool camCanBounce = true;
     private float Lookat = 3.5f;
     private Vector4 camBounTarPos;
 
@@ -65,9 +65,12 @@ public class ProcCamera : MonoBehaviour
     void Update()
     {
         if (!camMove)
-            #pragma warning disable CS0162
+        {
+#pragma warning disable CS0162
+            CalcCamposSetti();
             return;
-            #pragma warning restore CS0162
+#pragma warning restore CS0162
+        }
 
         if (angleCamera == targetCameraAngle && CameraY == TargetCameraY && TargetCameraY != SettingY)
         {
