@@ -13,7 +13,7 @@ public class CommuniProc : MonoBehaviour
     public Chessboard chessboard;
     public ProcCamera procCamera;
 
-    public ScrollRect History;
+    public Text HistoryText;
 
     public Toggle BlackPlayerT;
     public Toggle WhitePlayerT;
@@ -190,18 +190,20 @@ public class CommuniProc : MonoBehaviour
             transform.GetChild(a).gameObject.SetActive(true);
         }
 
-        History.GetComponent<Text>().text = chessboard.HistoryList();
+        SetHistoryText();
 
         this.gameObject.SetActive(true);
     }
 
     private void SetUnactive()
     {
-        /*for (int a = 0; a < transform.childCount; a++)
-        {
-            transform.GetChild(a).gameObject.SetActive(false);
-        }*/
         this.gameObject.SetActive(false);
+    }
+
+    private void SetHistoryText()
+    {
+        HistoryText.text = chessboard.HistoryList();
+        HistoryText.GetComponent<RectTransform>().sizeDelta = new Vector2(280, HistoryText.preferredHeight);
     }
 
     private void OnSendingTimerTick(System.Object source, System.Timers.ElapsedEventArgs e)
