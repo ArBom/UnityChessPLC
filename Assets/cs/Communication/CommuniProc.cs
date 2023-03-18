@@ -15,32 +15,44 @@ public class CommuniProc : MonoBehaviour
 
     public Text HistoryText;
 
+    public IPaddrBoxProc IpBox;
     public Toggle BlackPlayerT;
     public Toggle WhitePlayerT;
     public Toggle CameraMoveT;
     public Toggle CameraBounceT;
 
-    readonly string IPaddr = "192.168.0.1";
+    protected string IPaddr = "192.168.0.1";
     readonly int rack = 0;
     readonly int slot = 1;
 
-    private uint LastClickPLCcheqer = 0;
-    private uint _LastClickPLCchequer
+    private int LastClickPLCcheqer = 0;
+    private int _LastClickPLCchequer
     {
         get { return LastClickPLCcheqer; }
         set
         {
-            if (value != LastClickPLCcheqer)
-            {
-                LastClickPLCcheqer = value;
-                ChequerPos chequerPos = ChequerPosHelper.Int2ChequerPos(_LastClickPLCchequer);
+            if (value == LastClickPLCcheqer)
+                return;
+
+            LastClickPLCcheqer = value;
+
+            if (value >= 0)
+            { 
+                ChequerPos chequerPos = ChequerPosHelper.Int2ChequerPos((uint)_LastClickPLCchequer);
                 chessboard.TryMoveInto(chequerPos);
+            }
+            else if (value < -1 && value >= -16 )
+            {
+                choose?.Invoke((ChessmanType)(-value));
             }
         }
     }
 
     private readonly object CommuniLock = new object();
     private static System.Timers.Timer SendingTimer;
+
+    public delegate void Choose(ChessmanType chosen);
+    public event Choose choose;
 
     const byte TRUE = 0b0_0000_0001;
     const byte FALSE = 0b0_0000_0000;
@@ -58,6 +70,7 @@ public class CommuniProc : MonoBehaviour
     {
         s7Client = new S7Client();
 
+        IpBox.newIpAddr += SetNewIpAdd;
         procCamera.showComm += ChangeActive;
         chessboard.turnChange += UpdateData;
         BlackPlayerT.onValueChanged.AddListener(delegate { BToggleCh(BlackPlayerT); });
@@ -175,6 +188,11 @@ public class CommuniProc : MonoBehaviour
         CommT.Start();
     }
 
+    private void SetNewIpAdd(string NewIpAdd)
+    {
+        this.IPaddr = NewIpAdd;
+    }
+
     private void ChangeActive(bool active)
     {
         if (active)
@@ -219,7 +237,7 @@ public class CommuniProc : MonoBehaviour
                     byte[] readBuf = new byte[1];
                     s7Client.DBRead(1, 129, 1, readBuf);
 
-                    _LastClickPLCchequer = (uint)readBuf[0];
+                    _LastClickPLCchequer = readBuf[0];
                 }
 
                 s7Client.Disconnect();

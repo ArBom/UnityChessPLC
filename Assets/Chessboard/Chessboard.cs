@@ -38,7 +38,6 @@ public class Chessboard : MonoBehaviour
     private AudioClip toPlay;
 
     public uint[] s7ChType = new uint[64];
-    //private uint s7LastClick;
     private uint[] s7Moves = new uint[64];
     private bool s7WhiteTour;
 
@@ -131,8 +130,9 @@ public class Chessboard : MonoBehaviour
         //Set the actual turn
         actualTurn = Assets.Color.White;
 
-        //delegates       
-        procPromotionWin.choose += Promo;
+        //delegates
+        
+        procPromotionWin.choose += Promo;      
         turnChange += PlayAudioClip;
         turnChange += ResetEP;
 

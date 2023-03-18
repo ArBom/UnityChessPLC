@@ -11,6 +11,9 @@ public class IPaddrBoxProc : MonoBehaviour
     private InputField inputField;
     protected IPAddress address;
 
+    public delegate void NewIpAddr(string IpString);
+    public NewIpAddr newIpAddr;
+
     private void Awake()
     {
         this.inputField = this.GetComponent<InputField>();
@@ -42,7 +45,10 @@ public class IPaddrBoxProc : MonoBehaviour
 
                 this.GetComponent<Image>().color = new Color(0, .95f, .1f);
                 if (CommHelper.TryConnect(address))
+                {
                     statusInfo.text = "\uE0E7\" OK";
+                    newIpAddr?.Invoke(address.Address.ToString());
+                }
             }
             else
             {
