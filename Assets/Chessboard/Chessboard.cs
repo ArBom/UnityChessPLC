@@ -31,6 +31,7 @@ public class Chessboard : MonoBehaviour
     public GameObject ChPawn;
 
     public ProcPromotionWin procPromotionWin;
+    public CommuniProc communiProc;
 
     public AudioClip confutingAC;
     public AudioClip movingAC;
@@ -131,7 +132,7 @@ public class Chessboard : MonoBehaviour
         actualTurn = Assets.Color.White;
 
         //delegates
-        
+        communiProc.choose += Promo;
         procPromotionWin.choose += Promo;      
         turnChange += PlayAudioClip;
         turnChange += ResetEP;
@@ -398,11 +399,15 @@ public class Chessboard : MonoBehaviour
         ChequerPosAfterPromo = newChequerPos;
 
         Assets.Color color = chequers[Moves.marked.column, Moves.marked.row].chessman.color;
+
+        //Showing Promotion win in unity
         procPromotionWin.ShowYourself(color);
 
+        //Showing Promotion win at PLC
+        communiProc._ShowPromoWin = true;
     }
 
-    private void Promo(ChessmanType chessmanType)
+    public void Promo(ChessmanType chessmanType)
     {
         Destroy(chequers[Moves.marked.column, Moves.marked.row].chessman.gameObject);
         chequers[Moves.marked.column, Moves.marked.row].chessman = null;

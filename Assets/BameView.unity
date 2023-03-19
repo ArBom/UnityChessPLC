@@ -1630,7 +1630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 16.181095}
+  m_AnchoredPosition: {x: 0, y: 16.181093}
   m_SizeDelta: {x: 280, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &738594248
@@ -4200,6 +4200,11 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3367394439254935545, guid: b25bb598f0c306a438f094871349d741,
+        type: 3}
+      propertyPath: communiProc
+      value: 
+      objectReference: {fileID: 70998897}
     - target: {fileID: 3367394439254935545, guid: b25bb598f0c306a438f094871349d741,
         type: 3}
       propertyPath: procPromotionWin

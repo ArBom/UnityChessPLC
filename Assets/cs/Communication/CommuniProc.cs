@@ -60,16 +60,30 @@ public class CommuniProc : MonoBehaviour
     private bool WhiteTour = true;
     private bool WhitePLC = false;
     private bool BlackPLC = false;
+    private bool ShowPromoWin = false;
+    public bool _ShowPromoWin
+    {
+        set
+        {             
+            //if its PC user tour now than ignore this method
+            if ((WhiteTour && !WhitePLC) && (!WhiteTour && !BlackPLC))
+                return;
+
+            ShowPromoWin = value;
+            Assets.Color actual = WhiteTour ? Assets.Color.White : Assets.Color.Black;
+            UpdateData(actual);
+        }
+    }
 
     const ushort WhitePLCpos = 1;
     const ushort BlackPLCpos = 2;
+    const ushort ShowPromoWinpos = 3;
 
     private S7Client s7Client;
 
     private void Awake()
     {
         s7Client = new S7Client();
-
         IpBox.newIpAddr += SetNewIpAdd;
         procCamera.showComm += ChangeActive;
         chessboard.turnChange += UpdateData;
@@ -162,8 +176,10 @@ public class CommuniProc : MonoBehaviour
                     byte BlackTS = BlackPLC ? TRUE : FALSE;
                     BlackTS <<= BlackPLCpos;
 
+                    byte ShowPromoWinTS = ShowPromoWin ? TRUE : FALSE;
+                    ShowPromoWinTS <<= ShowPromoWinpos;
 
-                    byte restB = (byte)(WhiteTS | BlackTS | White);
+                    byte restB = (byte)(WhiteTS | BlackTS | White | ShowPromoWinTS);
                     byte[] rest = { restB };
                     int writing2 = s7Client.DBWrite(1, 128, 1, rest);
 
