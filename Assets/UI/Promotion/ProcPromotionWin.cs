@@ -8,7 +8,7 @@ using System;
 
 public class ProcPromotionWin : MonoBehaviour
 {
-    Animation animation;
+    new Animation animation;
 
     public delegate void ColorChange(Assets.Color newColor);
     public event ColorChange colorChange;

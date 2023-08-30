@@ -16,8 +16,6 @@ public class CubeRS : MonoBehaviour
     public TextMeshPro TMP;
 
     private Renderer rend;
-    private UnityEngine.Color ColorofSelection = UnityEngine.Color.white;
-    protected UnityEngine.Color StartColor;
     public string NameOfThis { get; protected set; }
     public Assets.Color Color { get; protected set; }
 
@@ -57,7 +55,6 @@ public class CubeRS : MonoBehaviour
             rend.material = MuddyMaterial;
         }
 
-        StartColor = rend.material.GetColor("_Color");
         l_Animator = lightOfCube.GetComponent<Animation>();
     }
 
@@ -66,8 +63,7 @@ public class CubeRS : MonoBehaviour
         if (chequerPos.column < 0 || chequerPos.column > 7 || chequerPos.row < 0 || chequerPos.row > 7)
             return;
 
-        ColorofSelection = rend.material.GetColor("_Color");
-        rend.material.SetColor("_Color", UnityEngine.Color.magenta);
+        TMP.text = "\u25A3";
 
         string chessmanIcon = "\u269C";
         if(this.chessman != null)
@@ -81,7 +77,7 @@ public class CubeRS : MonoBehaviour
         if (chequerPos.column < 0 || chequerPos.column > 7 || chequerPos.row < 0 || chequerPos.row > 7)
             return;
 
-        rend.material.SetColor("_Color", ColorofSelection);
+        TMP.text = "";
 
         chessboard.CubeExit(this.chequerPos);
     }
@@ -137,8 +133,9 @@ public class CubeRS : MonoBehaviour
             char name1 = (char)(this.chequerPos.column + 65);
             string name2 = (this.chequerPos.row + 1).ToString();
             NameOfThis = name1 + name2;
-            Destroy(TMP);
-            //TMP.text = ChequerPosHelper.ChequerPos2ushort(this.chequerPos.Value).ToString();
+
+            TMP.fontSize = 120;
+            TMP.text = "";
 
             return true;
         }
@@ -200,9 +197,6 @@ public class CubeRS : MonoBehaviour
 
     public void ResetColor()
     {
-        ColorofSelection = StartColor;
-        rend.material.SetColor("_Color", StartColor);
-
         lightOfCube.spotAngle = 1;
         lightOfCube.range = 0;
 

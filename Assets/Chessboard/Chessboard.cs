@@ -463,8 +463,6 @@ public class Chessboard : MonoBehaviour
                 positionOfBlackKing = CRS.chessman.position;
         }
 
-        ///////////////////////////
-
         List<Assets.Color> ToReturn = new List<Assets.Color>(); 
 
         if (Checked.ByBlack.Any(c =>
